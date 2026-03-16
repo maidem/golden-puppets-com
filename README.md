@@ -138,7 +138,7 @@ Beispiel für eine neue Komponente `TextBlock.vue`:
 </template>
 
 <script setup>
-defineProps({ blok: Object })
+defineProps({ blok: Object });
 </script>
 ```
 

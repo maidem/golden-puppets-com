@@ -1,0 +1,48 @@
+{
+  "components": [
+    {
+      "name": "hero_header",
+      "display_name": "Hero Header",
+      "is_root": false,
+      "is_nestable": true,
+      "schema": {
+        "headline": {
+          "type": "text",
+          "display_name": "Headline",
+          "required": true,
+          "pos": 0
+        },
+        "subline": {
+          "type": "text",
+          "display_name": "Subline",
+          "required": false,
+          "pos": 1
+        },
+        "cta_label": {
+          "type": "text",
+          "display_name": "CTA Button Text",
+          "required": false,
+          "pos": 2
+        },
+        "cta_link": {
+          "type": "multilink",
+          "display_name": "CTA Button Link",
+          "required": false,
+          "pos": 3
+        },
+        "cta_variant": {
+          "type": "option",
+          "display_name": "CTA Button Style",
+          "required": false,
+          "pos": 4,
+          "options": [
+            { "value": "primary", "name": "Primary" },
+            { "value": "secondary", "name": "Secondary" },
+            { "value": "outline", "name": "Outline" }
+          ],
+          "default_value": "primary"
+        }
+      }
+    }
+  ]
+}
