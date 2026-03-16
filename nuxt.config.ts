@@ -1,5 +1,10 @@
 export default defineNuxtConfig({
     compatibilityDate: '2026-03-16',
+    runtimeConfig: {
+        public: {
+            storyblokVersion: process.env.NODE_ENV === 'production' ? 'published' : 'draft',
+        },
+    },
     future: {
         compatibilityVersion: 4,
     },

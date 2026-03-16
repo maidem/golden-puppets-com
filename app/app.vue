@@ -15,10 +15,13 @@ const storyblokApi = useStoryblokApi()
 
 // Fetch global configuration (Header, Footer, etc.)
 // Wir nutzen useAsyncData um sicherzustellen, dass es auch bei SSR geladen wird
-const { data } = await useAsyncData('storyblok-config', async () => {
+  const runtimeConfig = useRuntimeConfig()
+  const version = runtimeConfig.public.storyblokVersion as 'draft' | 'published'
+
+  const { data } = await useAsyncData('storyblok-config', async () => {
   try {
     const response = await storyblokApi.get('cdn/stories/config', {
-      version: 'draft',
+      version,
       resolve_links: 'url'
     })
     return response.data.story

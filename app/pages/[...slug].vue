@@ -18,8 +18,11 @@ const route = useRoute()
 const slug = route.params.slug
 const url = slug && slug.length > 0 ? slug.join('/') : 'home'
 
+const runtimeConfig = useRuntimeConfig()
+const version = runtimeConfig.public.storyblokVersion as 'draft' | 'published'
+
 const { data } = await storyblokApi.get(`cdn/stories/${url}`, {
-  version: 'draft',
+  version,
 })
 
 const story = ref(data.story)
