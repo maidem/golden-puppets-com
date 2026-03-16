@@ -21,13 +21,21 @@ const url = slug && slug.length > 0 ? slug.join('/') : 'home'
 const runtimeConfig = useRuntimeConfig()
 const version = runtimeConfig.public.storyblokVersion as 'draft' | 'published'
 
-const { data } = await storyblokApi.get(`cdn/stories/${url}`, {
-  version,
+const { data } = await useAsyncData(`story-${url}`, async () => {
+  try {
+    const response = await storyblokApi.get(`cdn/stories/${url}`, { version })
+    return response.data.story
+  } catch (e: any) {
+    if (e?.status === 404) return null
+    throw e
+  }
 })
 
-const story = ref(data.story)
+const story = ref(data.value)
 
 onMounted(() => {
-  useStoryblokBridge(story.value.id, (newStory) => (story.value = newStory))
+  if (story.value) {
+    useStoryblokBridge(story.value.id, (newStory) => (story.value = newStory))
+  }
 })
 </script>
