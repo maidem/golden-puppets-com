@@ -41,6 +41,13 @@
             { "value": "outline", "name": "Outline" }
           ],
           "default_value": "primary"
+        },
+        "bg_image": {
+          "type": "asset",
+          "display_name": "Background Image",
+          "required": false,
+          "filetypes": ["images"],
+          "pos": 5
         }
       }
     }

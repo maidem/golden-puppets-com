@@ -6,6 +6,7 @@
       :cta-label="blok.cta_label"
       :resolved-link="resolvedLink"
       :cta-variant="blok.cta_variant || 'primary'"
+      :bg-image="blok.bg_image?.filename || ''"
     />
   </div>
 </template>
