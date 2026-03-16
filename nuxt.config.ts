@@ -1,0 +1,27 @@
+export default defineNuxtConfig({
+    compatibilityDate: '2026-03-16',
+    future: {
+        compatibilityVersion: 4,
+    },
+    devServer: {
+        port: 3000,
+        https: {
+            key: './localhost-key.pem',
+            cert: './localhost.pem'
+        }
+    },
+    devtools: { enabled: true },
+    modules: ['@storyblok/nuxt', '@nuxtjs/tailwindcss'],
+    storyblok: {
+        accessToken: process.env.STORYBLOK_DELIVERY_API_TOKEN,
+        apiOptions: {
+            region: 'eu',
+        },
+    },
+    components: {
+        global: true,
+        dirs: [
+            { path: '~/components', pathPrefix: false }
+        ]
+    }
+});

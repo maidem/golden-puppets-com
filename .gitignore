@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Nuxt build output
+.nuxt/
+.output/
+dist/
+
+# Environment variables – never commit real tokens!
+.env
+.env.*
+!.env.example
+
+# Local SSL certificates
+*.pem
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/settings.json
