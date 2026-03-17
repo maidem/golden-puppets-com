@@ -1,46 +1,46 @@
 name: Build & Deploy to Netcorp
 
 on:
-    # Ausgelöst durch den Storyblok-Webhook via PHP-Bridge
-    repository_dispatch:
-        types: [storyblok_publish]
-    # Manueller Start über GitHub UI
-    workflow_dispatch:
+  # Ausgelöst durch den Storyblok-Webhook via PHP-Bridge
+  repository_dispatch:
+    types: [storyblok_publish]
+  # Manueller Start über GitHub UI
+  workflow_dispatch:
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "22"
-                  cache: "npm"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Generate static site
-              run: npm run generate
-              env:
-                  STORYBLOK_DELIVERY_API_TOKEN: ${{ secrets.STORYBLOK_DELIVERY_API_TOKEN }}
+      - name: Generate static site
+        run: npm run generate
+        env:
+          STORYBLOK_DELIVERY_API_TOKEN: ${{ secrets.STORYBLOK_DELIVERY_API_TOKEN }}
 
-            - name: Deploy to Netcorp via SSH/tar
-              run: |
-                  # SSH-Key aus Secret einrichten
-                  mkdir -p ~/.ssh
-                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-                  chmod 600 ~/.ssh/deploy_key
-                  ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      - name: Deploy to Netcorp via SSH/tar
+        run: |
+          # SSH-Key aus Secret einrichten
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-                  # Dateien als tar-Stream übertragen und remote entpacken
-                  # webhook/ und .htaccess werden ausgeschlossen (liegen dauerhaft auf dem Server)
-                  tar -czf - -C .output/public --exclude=./webhook . | \
-                    ssh -i ~/.ssh/deploy_key \
-                        -o StrictHostKeyChecking=no \
-                        ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-                        "mkdir -p ${{ secrets.SSH_REMOTE_DIR }} && tar -xzf - -C ${{ secrets.SSH_REMOTE_DIR }}"
+          # Dateien als tar-Stream übertragen und remote entpacken
+          # webhook/ und .htaccess werden ausgeschlossen (liegen dauerhaft auf dem Server)
+          tar -czf - -C .output/public --exclude=./webhook . | \
+            ssh -i ~/.ssh/deploy_key \
+                -o StrictHostKeyChecking=no \
+                ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+                "mkdir -p ${{ secrets.SSH_REMOTE_DIR }} && tar -xzf - -C ${{ secrets.SSH_REMOTE_DIR }}"
