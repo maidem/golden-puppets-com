@@ -27,6 +27,9 @@ export default defineNuxtConfig({
   },
   components: {
     global: true,
-    dirs: [{ path: "~/components", pathPrefix: false }],
+    dirs: [
+      { path: "~/components", pathPrefix: false },
+      { path: "~/storyblok", pathPrefix: false, global: true },
+    ],
   },
 });
