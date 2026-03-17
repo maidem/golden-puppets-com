@@ -1,7 +1,7 @@
 {
   "components": [
     {
-      "name": "hero_header",
+      "name": "HeroHeader",
       "display_name": "Hero Header",
       "is_root": false,
       "is_nestable": true,
