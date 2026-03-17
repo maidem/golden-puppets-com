@@ -38,7 +38,8 @@ jobs:
                   ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
                   # Dateien als tar-Stream übertragen und remote entpacken
-                  tar -czf - -C .output/public . | \
+                  # webhook/ und .htaccess werden ausgeschlossen (liegen dauerhaft auf dem Server)
+                  tar -czf - -C .output/public --exclude=./webhook . | \
                     ssh -i ~/.ssh/deploy_key \
                         -o StrictHostKeyChecking=no \
                         ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
