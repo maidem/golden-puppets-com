@@ -4,6 +4,10 @@ on:
   # Ausgelöst durch den Storyblok-Webhook via PHP-Bridge
   repository_dispatch:
     types: [storyblok_publish]
+  # Automatisch bei Code-Push auf main
+  push:
+    branches:
+      - main
   # Manueller Start über GitHub UI
   workflow_dispatch:
 
