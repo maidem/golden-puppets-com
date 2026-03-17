@@ -31,6 +31,20 @@ if (file_exists($envFile)) {
 
 $GITHUB_REPO = 'maidem/golden-puppets-com';
 
+// Debouncing: Nur einen Deploy auslösen, auch wenn mehrere Webhooks kurz hintereinander kommen.
+// Wartezeit in Sekunden – in dieser Zeit werden weitere Webhooks ignoriert.
+$DEBOUNCE_SECONDS = 30;
+$lockFile = sys_get_temp_dir() . '/storyblok-deploy.lock';
+
+if (file_exists($lockFile)) {
+    $lastTrigger = (int) file_get_contents($lockFile);
+    if (time() - $lastTrigger < $DEBOUNCE_SECONDS) {
+        http_response_code(200);
+        exit(json_encode(['status' => 'ok', 'message' => 'Debounced – deploy already scheduled']));
+    }
+}
+file_put_contents($lockFile, time());
+
 // Optional: Storyblok Webhook-Signatur prüfen
 if (!empty($WEBHOOK_SECRET)) {
     $signature = $_SERVER['HTTP_WEBHOOK_SIGNATURE'] ?? '';
