@@ -26,8 +26,6 @@
 </template>
 
 <script setup>
-import { renderRichText } from '@storyblok/vue'
-
 const props = defineProps({ blok: Object })
 
 const bodyHtml = computed(() =>

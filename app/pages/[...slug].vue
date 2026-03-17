@@ -24,8 +24,7 @@ const { data } = await useAsyncData(`story-${url}`, async () => {
     const response = await storyblokApi.get(`cdn/stories/${url}`, { version });
     return response.data.story;
   } catch (e: any) {
-    if (e?.status === 404) return null;
-    throw e;
+    return null;
   }
 });
 

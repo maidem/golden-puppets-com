@@ -13,7 +13,8 @@ const props = defineProps({ blok: Object })
 const storyblokApi = useStoryblokApi()
 const runtimeConfig = useRuntimeConfig()
 
-const { data } = await useAsyncData(
+// Kein top-level await – läuft auch ohne Suspense-Boundary in StoryblokComponent
+const { data } = useAsyncData(
   `news-${props.blok.folder_slug || 'aktuelles'}`,
   () =>
     storyblokApi.get('cdn/stories', {
