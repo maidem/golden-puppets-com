@@ -12,11 +12,28 @@
 
 <script setup lang="ts">
 const storyblokApi = useStoryblokApi();
+const route = useRoute();
 
 // Fetch global configuration (Header, Footer, etc.)
 // Wir nutzen useAsyncData um sicherzustellen, dass es auch bei SSR geladen wird
 const runtimeConfig = useRuntimeConfig();
 const version = runtimeConfig.public.storyblokVersion as "draft" | "published";
+
+// SEO: No-Index auf der Preview-Seite (Netlify) + Canonical Link zur Live-Seite
+useHead({
+  meta: [
+    {
+      name: "robots",
+      content: version === "draft" ? "noindex, nofollow" : "index, follow",
+    },
+  ],
+  link: [
+    {
+      rel: "canonical",
+      href: `https://golden-puppets.com${route.path}`,
+    },
+  ],
+});
 
 const { data } = await useAsyncData("storyblok-config", async () => {
   try {
