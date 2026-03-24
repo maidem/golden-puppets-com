@@ -5,7 +5,6 @@
       "display_name": "News Artikel",
       "is_root": true,
       "is_nestable": false,
-      "preview_field": "headline",
       "schema": {
         "image": {
           "type": "asset",
@@ -30,6 +29,12 @@
           "type": "richtext",
           "display_name": "Inhalt",
           "pos": 3
+        },
+        "gallery": {
+          "type": "assets",
+          "display_name": "Bildergalerie",
+          "filetypes": ["images"],
+          "pos": 4
         }
       }
     }
