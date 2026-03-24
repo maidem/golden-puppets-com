@@ -1,0 +1,29 @@
+{
+  "components": [
+    {
+      "name": "feature",
+      "display_name": "Inhaltselement (Feature Card)",
+      "is_root": false,
+      "is_nestable": true,
+      "schema": {
+        "icon": {
+          "type": "asset",
+          "display_name": "Icon / Bild",
+          "filetypes": ["images"],
+          "pos": 0
+        },
+        "name": {
+          "type": "text",
+          "display_name": "Überschrift",
+          "required": true,
+          "pos": 1
+        },
+        "description": {
+          "type": "textarea",
+          "display_name": "Beschreibungstext",
+          "pos": 2
+        }
+      }
+    }
+  ]
+}
