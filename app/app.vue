@@ -1,12 +1,19 @@
 <template>
-  <div>
+  <div class="flex min-h-screen flex-col">
     <!-- Header/Navigation -->
-    <header v-if="config?.content" class="sticky top-0 z-50 bg-white shadow-sm">
-      <StoryblokComponent :blok="config.content" />
-    </header>
+    <StoryblokComponent v-if="config?.content" :blok="config.content" />
 
     <!-- Main Page Content -->
-    <NuxtPage />
+    <main class="flex-1">
+      <NuxtPage />
+    </main>
+
+    <!-- Global Footer (aus config.content.footer[0]) -->
+    <StoryblokComponent
+      v-if="footerBlok"
+      :key="footerBlok._uid"
+      :blok="footerBlok"
+    />
   </div>
 </template>
 
@@ -49,6 +56,11 @@ const { data } = await useAsyncData("storyblok-config", async () => {
 });
 
 const config = ref(data.value);
+
+const footerBlok = computed(() => {
+  const footer = config.value?.content?.footer;
+  return Array.isArray(footer) && footer.length ? footer[0] : null;
+});
 
 // Bridge for real-time updates of the config
 onMounted(() => {

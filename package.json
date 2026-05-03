@@ -7,18 +7,22 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "sb:pull": "storyblok components pull --space 290424384800697 --separate-files --path storyblok",
+    "sb:push": "storyblok components push --space 290424384800697 --separate-files --path storyblok"
   },
   "dependencies": {
-    "@storyblok/nuxt": "^10.1.0",
-    "nuxt": "^4.4.2"
+    "@storyblok/nuxt": "^10.1.4",
+    "nuxt": "^4.4.4"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.14.0",
-    "@vitejs/plugin-basic-ssl": "^2.2.0",
+    "@tailwindcss/vite": "^4.2.4",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "autoprefixer": "^10.4.27",
+    "nuxt-security": "^2.5.1",
     "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.19",
-    "vitest-environment-nuxt": "^1.0.1"
+    "storyblok": "^4.17.2",
+    "tailwindcss": "^4.2.4",
+    "vitest-environment-nuxt": "^2.0.0"
   }
 }

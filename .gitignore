@@ -22,3 +22,4 @@ dist/
 
 # Editor
 .vscode/settings.json
+.storyblok-pull/

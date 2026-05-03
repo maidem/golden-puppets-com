@@ -1,0 +1,36 @@
+{
+  "name": "grid",
+  "display_name": "Grid Layout (Inhaltsraster)",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Sektions-Überschrift",
+      "pos": 0
+    },
+    "subline": {
+      "type": "text",
+      "display_name": "Unterzeile / Subline",
+      "pos": 1
+    },
+    "columns": {
+      "type": "option",
+      "display_name": "Anzahl der Spalten",
+      "pos": 2,
+      "options": [
+        { "value": "2", "name": "2 Spalten" },
+        { "value": "3", "name": "3 Spalten" },
+        { "value": "4", "name": "4 Spalten" }
+      ],
+      "default_value": "3"
+    },
+    "columns_list": {
+      "type": "bloks",
+      "display_name": "Inhalts-Elemente",
+      "restrict_components": true,
+      "component_whitelist": ["feature"],
+      "pos": 3
+    }
+  }
+}

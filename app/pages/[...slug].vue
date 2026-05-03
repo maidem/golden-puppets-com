@@ -3,13 +3,8 @@
     <div v-if="story">
       <StoryblokComponent :blok="story.content" />
     </div>
-    <div v-else-if="error" class="p-12 text-center text-red-500">
-      <h1 class="text-2xl font-bold mb-2">Fehler beim Laden</h1>
-      <p class="mb-4">{{ error.message || 'Die Seite konnte nicht von Storyblok abgerufen werden.' }}</p>
-      <div class="inline-block text-left bg-gray-100 p-4 rounded text-xs text-black">
-        <p><strong>URL:</strong> {{ url }}</p>
-        <p><strong>Version:</strong> {{ version }}</p>
-      </div>
+    <div v-else-if="loadError" class="p-12 text-center text-red-500">
+      {{ loadError }}
     </div>
     <div v-else class="p-12 text-center text-gray-500">Lade...</div>
   </main>
@@ -18,19 +13,26 @@
 <script setup lang="ts">
 const storyblokApi = useStoryblokApi();
 const route = useRoute();
-const slug = route.params.slug as string[];
-const url = slug && slug.length > 0 ? slug.join("/") : "home";
+const slugParam = route.params.slug;
+const slugSegments = Array.isArray(slugParam)
+  ? slugParam
+  : slugParam
+    ? [slugParam]
+    : [];
+const url = slugSegments.length > 0 ? slugSegments.join("/") : "home";
 
 const runtimeConfig = useRuntimeConfig();
 const version = runtimeConfig.public.storyblokVersion as "draft" | "published";
 
-const { data: story, error } = await useAsyncData(`story-${url}`, async () => {
-  const response = await storyblokApi.get(`cdn/stories/${url}`, { 
-    version,
-    cv: version === 'draft' ? Date.now() : undefined
-  });
-  return response.data.story;
-});
+const { data, error: loadError } = await useAsyncData(
+  `story-${url}`,
+  async () => {
+    const response = await storyblokApi.get(`cdn/stories/${url}`, { version });
+    return response.data.story;
+  },
+);
+
+const story = ref(data.value);
 
 onMounted(() => {
   if (story.value) {

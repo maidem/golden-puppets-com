@@ -1,0 +1,42 @@
+{
+  "name": "header",
+  "display_name": "Header (Site-Konfiguration)",
+  "is_root": true,
+  "is_nestable": false,
+  "schema": {
+    "logo": {
+      "type": "asset",
+      "display_name": "Logo",
+      "filetypes": ["images"],
+      "pos": 0
+    },
+    "event_bar_visible": {
+      "type": "boolean",
+      "display_name": "Event-Leiste anzeigen",
+      "default_value": true,
+      "pos": 1
+    },
+    "event_bar": {
+      "type": "bloks",
+      "display_name": "Event-Leiste (über der Navigation)",
+      "restrict_components": true,
+      "component_whitelist": ["event_item"],
+      "pos": 2
+    },
+    "nav_menu": {
+      "type": "bloks",
+      "display_name": "Hauptnavigation",
+      "restrict_components": true,
+      "component_whitelist": ["nav_item"],
+      "pos": 3
+    },
+    "footer": {
+      "type": "bloks",
+      "display_name": "Footer",
+      "restrict_components": true,
+      "component_whitelist": ["footer"],
+      "maximum": 1,
+      "pos": 4
+    }
+  }
+}

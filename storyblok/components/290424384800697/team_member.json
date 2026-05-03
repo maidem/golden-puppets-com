@@ -1,0 +1,25 @@
+{
+  "name": "team_member",
+  "display_name": "Team-Mitglied",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "image": {
+      "type": "asset",
+      "display_name": "Foto",
+      "filetypes": ["images"],
+      "pos": 0
+    },
+    "name": {
+      "type": "text",
+      "display_name": "Name",
+      "required": true,
+      "pos": 1
+    },
+    "role": {
+      "type": "text",
+      "display_name": "Rolle / Position",
+      "pos": 2
+    }
+  }
+}

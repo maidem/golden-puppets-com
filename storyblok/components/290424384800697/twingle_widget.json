@@ -1,0 +1,60 @@
+{
+  "name": "twingle_widget",
+  "display_name": "Twingle Spenden-Widget",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "intro": {
+      "type": "textarea",
+      "display_name": "Einleitungstext",
+      "pos": 1
+    },
+    "embed_url": {
+      "type": "text",
+      "display_name": "Twingle Embed-URL",
+      "description": "Aus twingleMANAGER → Projekteinstellungen → Kontaktdaten & Einbindung. Beispiel: https://spenden.twingle.de/embed/<org>/<projekt>/twxxxxxxxxxx/widget",
+      "required": true,
+      "pos": 2
+    },
+    "preset_amount": {
+      "type": "number",
+      "display_name": "Voreingestellter Betrag (€)",
+      "description": "Optional. Muss innerhalb Min/Max des Sliders liegen.",
+      "pos": 3
+    },
+    "preset_rhythm": {
+      "type": "option",
+      "display_name": "Voreingestellter Rhythmus",
+      "pos": 4,
+      "options": [
+        { "value": "one_time", "name": "Einmalig" },
+        { "value": "monthly", "name": "Monatlich" },
+        { "value": "quarterly", "name": "Quartalsweise" },
+        { "value": "halfyearly", "name": "Halbjährlich" },
+        { "value": "yearly", "name": "Jährlich" }
+      ]
+    },
+    "preset_target": {
+      "type": "text",
+      "display_name": "Voreingestellter Spendenzweck (Text)",
+      "pos": 5
+    },
+    "preset_target_fix": {
+      "type": "boolean",
+      "display_name": "Spendenzweck nicht änderbar",
+      "default_value": false,
+      "pos": 6
+    },
+    "extra_params": {
+      "type": "text",
+      "display_name": "Zusätzliche Parameter (Querystring)",
+      "description": "Optional, ohne führendes ?. Beispiel: tw_min=10&tw_max=500",
+      "pos": 7
+    }
+  }
+}

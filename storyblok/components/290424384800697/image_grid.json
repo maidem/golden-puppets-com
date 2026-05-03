@@ -1,0 +1,30 @@
+{
+  "name": "image_grid",
+  "display_name": "Bilder-Grid (mit Lightbox)",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "images": {
+      "type": "multiasset",
+      "display_name": "Bilder",
+      "filetypes": ["images"],
+      "pos": 1
+    },
+    "columns": {
+      "type": "option",
+      "display_name": "Spalten",
+      "pos": 2,
+      "options": [
+        { "value": "2", "name": "2 Spalten" },
+        { "value": "3", "name": "3 Spalten" },
+        { "value": "4", "name": "4 Spalten" }
+      ],
+      "default_value": "3"
+    }
+  }
+}

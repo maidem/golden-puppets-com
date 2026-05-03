@@ -1,0 +1,93 @@
+{
+  "name": "pretix_events",
+  "display_name": "Pretix Veranstaltungen",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "intro": {
+      "type": "textarea",
+      "display_name": "Einleitungstext",
+      "pos": 1
+    },
+    "base_url": {
+      "type": "text",
+      "display_name": "Pretix Basis-URL",
+      "description": "z. B. https://pretix.eu (oder eigene Domain). Ohne abschließenden Slash.",
+      "default_value": "https://pretix.eu",
+      "pos": 2
+    },
+    "organizer_slug": {
+      "type": "text",
+      "display_name": "Veranstalter-Slug",
+      "description": "Slug des Pretix-Organizers. Beispiel: golden-puppets",
+      "required": true,
+      "pos": 3
+    },
+    "event_slug": {
+      "type": "text",
+      "display_name": "Event-Slug (optional)",
+      "description": "Leer lassen für eine Übersicht aller öffentlichen Events des Veranstalters. Mit Slug nur dieses eine Event.",
+      "pos": 4
+    },
+    "list_type": {
+      "type": "option",
+      "display_name": "Darstellung",
+      "default_value": "list",
+      "pos": 5,
+      "options": [
+        { "value": "list", "name": "Liste" },
+        { "value": "calendar", "name": "Monatskalender" },
+        { "value": "week", "name": "Wochenkalender" }
+      ]
+    },
+    "language": {
+      "type": "option",
+      "display_name": "Sprache",
+      "default_value": "de",
+      "pos": 6,
+      "options": [
+        { "value": "de", "name": "Deutsch" },
+        { "value": "en", "name": "Englisch" }
+      ]
+    },
+    "filter": {
+      "type": "text",
+      "display_name": "Filter (optional)",
+      "description": "Beispiel: attr[Promoted]=True",
+      "pos": 7
+    },
+    "voucher": {
+      "type": "text",
+      "display_name": "Voucher-Code (optional)",
+      "pos": 8
+    },
+    "disable_vouchers": {
+      "type": "boolean",
+      "display_name": "Voucher-Eingabe ausblenden",
+      "default_value": false,
+      "pos": 9
+    },
+    "disable_iframe": {
+      "type": "boolean",
+      "display_name": "Checkout immer in neuem Tab",
+      "default_value": false,
+      "pos": 10
+    },
+    "display_event_info": {
+      "type": "option",
+      "display_name": "Event-Info anzeigen",
+      "default_value": "auto",
+      "pos": 11,
+      "options": [
+        { "value": "auto", "name": "Automatisch" },
+        { "value": "true", "name": "Immer anzeigen" },
+        { "value": "false", "name": "Ausblenden" }
+      ]
+    }
+  }
+}

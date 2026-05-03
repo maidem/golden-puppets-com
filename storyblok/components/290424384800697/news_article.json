@@ -1,0 +1,38 @@
+{
+  "name": "news_article",
+  "display_name": "News Artikel",
+  "is_root": true,
+  "is_nestable": false,
+  "schema": {
+    "image": {
+      "type": "asset",
+      "display_name": "Bild",
+      "filetypes": ["images"],
+      "required": true,
+      "pos": 0
+    },
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "required": true,
+      "pos": 1
+    },
+    "teaser_text": {
+      "type": "textarea",
+      "display_name": "Teasertext",
+      "description": "Kurzer Text für die Übersichtsseite",
+      "pos": 2
+    },
+    "body": {
+      "type": "richtext",
+      "display_name": "Inhalt",
+      "pos": 3
+    },
+    "gallery": {
+      "type": "multiasset",
+      "display_name": "Bildergalerie",
+      "filetypes": ["images"],
+      "pos": 4
+    }
+  }
+}

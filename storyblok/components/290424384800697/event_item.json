@@ -1,0 +1,31 @@
+{
+  "name": "event_item",
+  "display_name": "Event-Eintrag",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "label": {
+      "type": "text",
+      "display_name": "Text",
+      "required": true,
+      "pos": 0
+    },
+    "link": {
+      "type": "multilink",
+      "display_name": "Link",
+      "pos": 1
+    },
+    "date": {
+      "type": "datetime",
+      "display_name": "Datum (optional)",
+      "disable_time": true,
+      "pos": 2
+    },
+    "visible": {
+      "type": "boolean",
+      "display_name": "Sichtbar",
+      "default_value": true,
+      "pos": 3
+    }
+  }
+}

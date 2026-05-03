@@ -1,0 +1,26 @@
+{
+  "name": "footer",
+  "display_name": "Footer",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "tagline": {
+      "type": "text",
+      "display_name": "Tagline / Kurzbeschreibung",
+      "pos": 0
+    },
+    "nav_menu": {
+      "type": "bloks",
+      "display_name": "Footer-Navigation",
+      "restrict_components": true,
+      "component_whitelist": ["nav_item"],
+      "pos": 1
+    },
+    "copyright": {
+      "type": "text",
+      "display_name": "Copyright-Text",
+      "default_value": "© Golden Puppets",
+      "pos": 2
+    }
+  }
+}

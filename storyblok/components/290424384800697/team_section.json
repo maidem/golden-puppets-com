@@ -1,0 +1,36 @@
+{
+  "name": "team_section",
+  "display_name": "Team-Sektion",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "subline": {
+      "type": "text",
+      "display_name": "Unterzeile",
+      "pos": 1
+    },
+    "columns": {
+      "type": "option",
+      "display_name": "Spalten",
+      "pos": 2,
+      "options": [
+        { "value": "2", "name": "2 Spalten" },
+        { "value": "3", "name": "3 Spalten" },
+        { "value": "4", "name": "4 Spalten" }
+      ],
+      "default_value": "3"
+    },
+    "members": {
+      "type": "bloks",
+      "display_name": "Mitglieder",
+      "restrict_components": true,
+      "component_whitelist": ["team_member"],
+      "pos": 3
+    }
+  }
+}
