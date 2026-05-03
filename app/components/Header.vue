@@ -1,6 +1,6 @@
 <template>
   <header v-editable="blok" class="sticky top-0 z-50 bg-black">
-      <div class="flex items-stretch min-h-[160px] pb-[2px]">
+    <div class="flex items-stretch min-h-[160px] pb-[2px]">
       <!-- Logo: gelbe Box, nur rechts unten abgerundet (links = Screenrand) -->
       <NuxtLink
         to="/"
@@ -22,7 +22,9 @@
       <div class="w-[2px] shrink-0"></div>
 
       <!-- Navigation: gelbe Box, nur links unten abgerundet (rechts = Screenrand) -->
-      <nav class="hidden md:flex flex-1 items-center justify-end px-8 gap-8 bg-[#FFE600] rounded-bl-[1.75rem]">
+      <nav
+        class="hidden md:flex flex-1 items-center justify-end px-8 gap-8 bg-[#FFE600] rounded-bl-[1.75rem]"
+      >
         <div v-for="navItem in blok.nav_menu" :key="navItem._uid">
           <NavItem v-if="navItem.component === 'nav_item'" :blok="navItem" />
           <StoryblokComponent v-else :blok="navItem" />
@@ -31,12 +33,14 @@
 
       <!-- Mobile Button -->
       <div class="md:hidden flex items-center px-4 bg-[#FFE600]">
-        <BaseButton variant="outline" class="px-4 py-2 text-sm">Menu</BaseButton>
+        <BaseButton variant="outline" class="px-4 py-2 text-sm"
+          >Menu</BaseButton
+        >
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
-defineProps({ blok: Object })
+defineProps({ blok: Object });
 </script>
