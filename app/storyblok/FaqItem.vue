@@ -51,8 +51,6 @@
 </template>
 
 <script setup>
-import { RichTextRenderer } from "@storyblok/nuxt";
-
 defineProps({ blok: Object });
 const open = ref(false);
 </script>
