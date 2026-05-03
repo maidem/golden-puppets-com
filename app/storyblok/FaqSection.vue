@@ -1,15 +1,20 @@
 <template>
-  <section v-editable="blok" class="py-16 px-4 max-w-4xl mx-auto">
-    <h2 v-if="blok.headline" class="text-6xl font-black tracking-tight mb-12">
+  <section v-editable="blok" class="py-16">
+    <h2
+      v-if="blok.headline"
+      class="text-6xl font-black tracking-tight mb-12 px-8 md:px-16"
+    >
       {{ blok.headline }}
     </h2>
 
     <div>
-      <StoryblokComponent
-        v-for="item in blok.items"
-        :key="item._uid"
-        :blok="item"
-      />
+      <div class="border-b-2 border-black">
+        <StoryblokComponent
+          v-for="(item, index) in blok.items"
+          :key="item._uid"
+          :blok="{ ...item, _index: index }"
+        />
+      </div>
     </div>
   </section>
 </template>

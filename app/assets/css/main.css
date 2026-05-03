@@ -5,6 +5,10 @@
   --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
   font-family: var(--font-sans);
 }
