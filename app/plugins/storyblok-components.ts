@@ -1,54 +1,76 @@
-import ContactForm from "~/storyblok/ContactForm.vue";
-import EventItem from "~/storyblok/EventItem.vue";
-import Feature from "~/storyblok/Feature.vue";
-import Footer from "~/storyblok/Footer.vue";
-import Grid from "~/storyblok/Grid.vue";
-import Header from "~/storyblok/Header.vue";
-import HeroHeader from "~/storyblok/HeroHeader.vue";
-import ImageGrid from "~/storyblok/ImageGrid.vue";
-import NavItem from "~/storyblok/NavItem.vue";
-import NewsArticle from "~/storyblok/NewsArticle.vue";
-import NewsOverview from "~/storyblok/NewsOverview.vue";
-import Page from "~/storyblok/Page.vue";
-import PretixEvents from "~/storyblok/PretixEvents.vue";
-import Teaser from "~/storyblok/Teaser.vue";
-import TeamMember from "~/storyblok/TeamMember.vue";
-import TeamSection from "~/storyblok/TeamSection.vue";
-import TwingleWidget from "~/storyblok/TwingleWidget.vue";
+import { defineAsyncComponent } from "vue";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component("ContactForm", ContactForm);
-  nuxtApp.vueApp.component("EventItem", EventItem);
-  nuxtApp.vueApp.component("event_item", EventItem);
-  nuxtApp.vueApp.component("contact_form", ContactForm);
-  nuxtApp.vueApp.component("Feature", Feature);
-  nuxtApp.vueApp.component("feature", Feature);
-  nuxtApp.vueApp.component("Footer", Footer);
-  nuxtApp.vueApp.component("footer", Footer);
-  nuxtApp.vueApp.component("Grid", Grid);
-  nuxtApp.vueApp.component("grid", Grid);
-  nuxtApp.vueApp.component("Header", Header);
-  nuxtApp.vueApp.component("header", Header);
-  nuxtApp.vueApp.component("HeroHeader", HeroHeader);
-  nuxtApp.vueApp.component("hero_header", HeroHeader);
-  nuxtApp.vueApp.component("ImageGrid", ImageGrid);
-  nuxtApp.vueApp.component("image_grid", ImageGrid);
-  nuxtApp.vueApp.component("NavItem", NavItem);
-  nuxtApp.vueApp.component("nav_item", NavItem);
-  nuxtApp.vueApp.component("NewsArticle", NewsArticle);
-  nuxtApp.vueApp.component("news_article", NewsArticle);
-  nuxtApp.vueApp.component("NewsOverview", NewsOverview);
-  nuxtApp.vueApp.component("news_overview", NewsOverview);
-  nuxtApp.vueApp.component("Page", Page);
-  nuxtApp.vueApp.component("page", Page);
-  nuxtApp.vueApp.component("PretixEvents", PretixEvents);
-  nuxtApp.vueApp.component("pretix_events", PretixEvents);
-  nuxtApp.vueApp.component("Teaser", Teaser);
-  nuxtApp.vueApp.component("teaser", Teaser);
-  nuxtApp.vueApp.component("TeamMember", TeamMember);
-  nuxtApp.vueApp.component("team_member", TeamMember);
-  nuxtApp.vueApp.component("TeamSection", TeamSection);
-  nuxtApp.vueApp.component("team_section", TeamSection);
-  nuxtApp.vueApp.component("TwingleWidget", TwingleWidget);
-  nuxtApp.vueApp.component("twingle_widget", TwingleWidget);
+  const components: Record<string, ReturnType<typeof defineAsyncComponent>> = {
+    ContactForm: defineAsyncComponent(
+      () => import("~/storyblok/ContactForm.vue"),
+    ),
+    contact_form: defineAsyncComponent(
+      () => import("~/storyblok/ContactForm.vue"),
+    ),
+    EventItem: defineAsyncComponent(() => import("~/storyblok/EventItem.vue")),
+    event_item: defineAsyncComponent(() => import("~/storyblok/EventItem.vue")),
+    Feature: defineAsyncComponent(() => import("~/storyblok/Feature.vue")),
+    feature: defineAsyncComponent(() => import("~/storyblok/Feature.vue")),
+    Footer: defineAsyncComponent(() => import("~/storyblok/Footer.vue")),
+    footer: defineAsyncComponent(() => import("~/storyblok/Footer.vue")),
+    Grid: defineAsyncComponent(() => import("~/storyblok/Grid.vue")),
+    grid: defineAsyncComponent(() => import("~/storyblok/Grid.vue")),
+    Header: defineAsyncComponent(() => import("~/storyblok/Header.vue")),
+    header: defineAsyncComponent(() => import("~/storyblok/Header.vue")),
+    HeroHeader: defineAsyncComponent(
+      () => import("~/storyblok/HeroHeader.vue"),
+    ),
+    hero_header: defineAsyncComponent(
+      () => import("~/storyblok/HeroHeader.vue"),
+    ),
+    ImageGrid: defineAsyncComponent(() => import("~/storyblok/ImageGrid.vue")),
+    image_grid: defineAsyncComponent(() => import("~/storyblok/ImageGrid.vue")),
+    NavItem: defineAsyncComponent(() => import("~/storyblok/NavItem.vue")),
+    nav_item: defineAsyncComponent(() => import("~/storyblok/NavItem.vue")),
+    NewsArticle: defineAsyncComponent(
+      () => import("~/storyblok/NewsArticle.vue"),
+    ),
+    news_article: defineAsyncComponent(
+      () => import("~/storyblok/NewsArticle.vue"),
+    ),
+    NewsOverview: defineAsyncComponent(
+      () => import("~/storyblok/NewsOverview.vue"),
+    ),
+    news_overview: defineAsyncComponent(
+      () => import("~/storyblok/NewsOverview.vue"),
+    ),
+    Page: defineAsyncComponent(() => import("~/storyblok/Page.vue")),
+    page: defineAsyncComponent(() => import("~/storyblok/Page.vue")),
+    PretixEvents: defineAsyncComponent(
+      () => import("~/storyblok/PretixEvents.vue"),
+    ),
+    pretix_events: defineAsyncComponent(
+      () => import("~/storyblok/PretixEvents.vue"),
+    ),
+    Teaser: defineAsyncComponent(() => import("~/storyblok/Teaser.vue")),
+    teaser: defineAsyncComponent(() => import("~/storyblok/Teaser.vue")),
+    TeamMember: defineAsyncComponent(
+      () => import("~/storyblok/TeamMember.vue"),
+    ),
+    team_member: defineAsyncComponent(
+      () => import("~/storyblok/TeamMember.vue"),
+    ),
+    TeamSection: defineAsyncComponent(
+      () => import("~/storyblok/TeamSection.vue"),
+    ),
+    team_section: defineAsyncComponent(
+      () => import("~/storyblok/TeamSection.vue"),
+    ),
+    TwingleWidget: defineAsyncComponent(
+      () => import("~/storyblok/TwingleWidget.vue"),
+    ),
+    twingle_widget: defineAsyncComponent(
+      () => import("~/storyblok/TwingleWidget.vue"),
+    ),
+  };
+
+  for (const [name, component] of Object.entries(components)) {
+    nuxtApp.vueApp.component(name, component);
+  }
 });

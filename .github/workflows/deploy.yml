@@ -3,7 +3,7 @@ name: Build & Deploy to Netcorp
 on:
   # Ausgelöst durch den Storyblok-Webhook via PHP-Bridge
   repository_dispatch:
-    types: [storyblok_publish]
+    types: [ storyblok_publish ]
   # Automatisch bei Code-Push auf main
   push:
     branches:
@@ -24,7 +24,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
 
       - name: Install dependencies
