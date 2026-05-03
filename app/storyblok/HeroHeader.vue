@@ -1,12 +1,12 @@
 <template>
   <section
     v-editable="blok"
-    class="relative flex flex-col items-center justify-center text-center px-4 min-h-[85vh] bg-gradient-to-br from-white to-gray-50 overflow-hidden"
+    class="relative flex flex-col items-center justify-center text-center px-4 min-h-[65vh] bg-gradient-to-br from-white to-gray-50 overflow-hidden"
   >
     <!-- Background image -->
     <div
       v-if="blok.bg_image?.filename"
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale contrast-125 brightness-75"
       :style="{ backgroundImage: `url(${blok.bg_image.filename})` }"
     />
     
@@ -79,7 +79,7 @@ const isExternal = computed(() => {
 const buttonStyles = computed(() => {
   const base = 'px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg'
   const variants = {
-    primary: 'bg-[#00b3b0] text-white hover:bg-[#009a97]',
+    primary: 'bg-black text-white hover:bg-gray-900',
     secondary: 'bg-gray-800 text-white hover:bg-gray-900',
     outline: 'border-2 border-[#00b3b0] text-[#00b3b0] hover:bg-[#00b3b0] hover:text-white backdrop-blur-sm'
   }

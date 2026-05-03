@@ -1,1 +1,10 @@
 @import "tailwindcss";
+@import "@fontsource-variable/space-grotesk";
+
+:root {
+  --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}

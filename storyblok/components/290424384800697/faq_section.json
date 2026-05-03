@@ -1,0 +1,20 @@
+{
+  "name": "faq_section",
+  "display_name": "FAQ Section",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "items": {
+      "type": "bloks",
+      "display_name": "FAQ Einträge",
+      "restrict_components": true,
+      "component_whitelist": ["faq_item"],
+      "pos": 1
+    }
+  }
+}

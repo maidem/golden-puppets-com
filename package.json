@@ -12,6 +12,7 @@
     "sb:push": "storyblok components push --space 290424384800697 --separate-files --path storyblok"
   },
   "dependencies": {
+    "@fontsource-variable/space-grotesk": "^5.2.10",
     "@storyblok/nuxt": "^10.1.4",
     "nuxt": "^4.4.4"
   },

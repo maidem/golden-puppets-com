@@ -1,8 +1,8 @@
 <template>
   <NuxtLink
     :to="to"
-    class="text-gray-600 hover:text-[#00b3b0] transition-colors duration-300 font-medium px-4 py-2"
-    active-class="text-[#00b3b0]"
+    class="text-black hover:opacity-60 transition-opacity duration-200 font-medium px-4 py-2 text-[1.5rem]"
+    active-class="opacity-60"
   >
     <slot />
   </NuxtLink>

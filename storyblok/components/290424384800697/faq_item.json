@@ -1,0 +1,20 @@
+{
+  "name": "faq_item",
+  "display_name": "FAQ Item",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "question": {
+      "type": "text",
+      "display_name": "Frage",
+      "required": true,
+      "pos": 0
+    },
+    "answer": {
+      "type": "richtext",
+      "display_name": "Antwort",
+      "required": true,
+      "pos": 1
+    }
+  }
+}
