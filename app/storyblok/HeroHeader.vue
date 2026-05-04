@@ -1,54 +1,60 @@
 <template>
   <section
     v-editable="blok"
-    class="relative flex flex-col items-center justify-center text-center px-4 min-h-[65vh] bg-gradient-to-br from-white to-gray-50 overflow-hidden"
+    class="relative flex items-end min-h-[80vh] overflow-hidden"
   >
     <!-- Background image -->
     <div
       v-if="blok.bg_image?.filename"
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale contrast-125 brightness-75"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale contrast-125"
       :style="{ backgroundImage: `url(${blok.bg_image.filename})` }"
     />
+    <!-- Gradient overlay -->
+    <div class="absolute inset-0 bg-black/55" />
 
-    <!-- Overlay when bg image is set -->
-    <div v-if="blok.bg_image?.filename" class="absolute inset-0 bg-black/40" />
-
-    <!-- Content Container -->
-    <div class="relative z-10 flex flex-col items-center max-w-4xl">
-      <h1
-        :class="[
-          'mb-6 text-5xl md:text-7xl font-black tracking-tight',
-          blok.bg_image?.filename
-            ? 'text-white drop-shadow-md'
-            : 'text-gray-900',
-        ]"
+    <!-- Content: golden ratio position, left-aligned -->
+    <div class="relative z-10 w-full px-5 md:px-16 pb-[12vh]">
+      <!-- Yellow label / eyebrow -->
+      <div
+        v-if="blok.eyebrow"
+        class="inline-block bg-[#FFE600] text-black text-xs font-bold tracking-widest uppercase px-3 py-1 mb-5 rounded-sm"
       >
-        {{ blok.headline }}
+        {{ blok.eyebrow }}
+      </div>
+
+      <!-- Headline -->
+      <h1
+        class="font-black leading-[1.0] tracking-tight text-[2.75rem] md:text-6xl lg:text-7xl mb-6 max-w-3xl"
+      >
+        <span class="text-white block">{{ blok.headline }}</span>
+        <span v-if="blok.headline_accent" class="text-[#FFE600] block">{{
+          blok.headline_accent
+        }}</span>
       </h1>
 
+      <!-- Subline -->
       <p
         v-if="blok.subline"
-        :class="[
-          'text-lg md:text-xl mb-10 leading-relaxed font-medium',
-          blok.bg_image?.filename
-            ? 'text-white/90 drop-shadow-sm'
-            : 'text-gray-600',
-        ]"
+        class="text-white/90 text-base md:text-lg font-normal leading-relaxed max-w-md mb-10 tracking-wide"
       >
         {{ blok.subline }}
       </p>
 
-      <div v-if="blok.cta_label" class="flex flex-wrap justify-center gap-4">
+      <!-- CTA -->
+      <div v-if="blok.cta_label">
         <NuxtLink
           v-if="resolvedLink"
           :to="resolvedLink"
           :target="isExternal ? '_blank' : undefined"
           :rel="isExternal ? 'noopener noreferrer' : undefined"
-          :class="buttonStyles"
+          class="inline-flex items-center gap-2 bg-[#FFE600] text-black font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent hover:bg-white transition-colors duration-200"
         >
           {{ blok.cta_label }}
         </NuxtLink>
-        <span v-else :class="buttonStyles">
+        <span
+          v-else
+          class="inline-flex items-center gap-2 bg-[#FFE600] text-black font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent"
+        >
           {{ blok.cta_label }}
         </span>
       </div>
@@ -78,17 +84,5 @@ const isExternal = computed(() => {
     resolvedLink.value.startsWith("http") ||
     resolvedLink.value.startsWith("mailto:")
   );
-});
-
-const buttonStyles = computed(() => {
-  const base =
-    "px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg";
-  const variants = {
-    primary: "bg-black text-white hover:bg-gray-900",
-    secondary: "bg-gray-800 text-white hover:bg-gray-900",
-    outline:
-      "border-2 border-[#00b3b0] text-[#00b3b0] hover:bg-[#00b3b0] hover:text-white backdrop-blur-sm",
-  };
-  return `${base} ${variants[props.blok.cta_variant] || variants.primary}`;
 });
 </script>

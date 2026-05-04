@@ -24,9 +24,9 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component("faq_item", FaqItem);
   nuxtApp.vueApp.component("faq_section", FaqSection);
   nuxtApp.vueApp.component("feature", Feature);
-  nuxtApp.vueApp.component("footer", Footer);
+  nuxtApp.vueApp.component("Footer", Footer);
   nuxtApp.vueApp.component("grid", Grid);
-  nuxtApp.vueApp.component("header", Header);
+  nuxtApp.vueApp.component("Header", Header);
   nuxtApp.vueApp.component("hero_header", HeroHeader);
   nuxtApp.vueApp.component("image_grid", ImageGrid);
   nuxtApp.vueApp.component("nav_item", NavItem);

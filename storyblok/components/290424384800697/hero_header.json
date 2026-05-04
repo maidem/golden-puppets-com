@@ -16,10 +16,15 @@
       "required": true,
       "pos": 1
     },
+    "headline_accent": {
+      "type": "text",
+      "display_name": "Headline (2. Zeile, gelb)",
+      "pos": 2
+    },
     "subline": {
       "type": "text",
       "display_name": "Subline",
-      "pos": 2
+      "pos": 3
     },
     "cta_label": {
       "type": "text",

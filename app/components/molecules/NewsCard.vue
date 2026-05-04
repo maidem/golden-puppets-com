@@ -1,6 +1,6 @@
 <template>
   <article
-    class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col group"
+    class="bg-[#2a2a2a] rounded-2xl border-2 border-black overflow-hidden flex flex-col group hover:shadow-2xl transition-shadow duration-300"
   >
     <!-- Bild -->
     <div class="aspect-video overflow-hidden bg-gray-100">
@@ -20,19 +20,23 @@
 
     <!-- Inhalt -->
     <div class="p-6 flex flex-col flex-grow">
-      <BaseHeading tag="h3" size="sm" class="mb-3 text-gray-800">
+      <BaseHeading
+        tag="h3"
+        size="sm"
+        class="mb-3 text-white tracking-tight font-semibold"
+      >
         {{ headline }}
       </BaseHeading>
       <p
         v-if="teaserText"
-        class="text-gray-600 text-sm leading-relaxed mb-6 flex-grow line-clamp-3"
+        class="text-gray-300 text-sm leading-relaxed mb-6 flex-grow line-clamp-3"
       >
         {{ teaserText }}
       </p>
 
       <div class="mt-auto pt-2">
         <NuxtLink :to="`/${link}`" class="inline-block">
-          <BaseButton variant="outline">Mehr&nbsp;…</BaseButton>
+          <BaseButton variant="contrast">Mehr&nbsp;…</BaseButton>
         </NuxtLink>
       </div>
     </div>
@@ -41,9 +45,9 @@
 
 <script setup>
 defineProps({
-  image: { type: String, default: '' },
+  image: { type: String, default: "" },
   headline: { type: String, required: true },
-  teaserText: { type: String, default: '' },
+  teaserText: { type: String, default: "" },
   link: { type: String, required: true },
-})
+});
 </script>
