@@ -7,7 +7,7 @@
       {{ blok.headline }}
     </h2>
 
-    <div>
+    <div class="px-8 md:px-16">
       <div class="border-b-2 border-black">
         <StoryblokComponent
           v-for="(item, index) in blok.items"

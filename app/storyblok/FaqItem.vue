@@ -7,7 +7,7 @@
     >
       <!-- Nummer -->
       <span
-        class="shrink-0 w-[640px] text-sm font-bold text-black tabular-nums hidden md:block"
+        class="shrink-0 w-[640px] text-4xl font-black text-black tabular-nums hidden md:block"
       >
         {{ String((blok._index ?? 0) + 1).padStart(2, "0") }}
       </span>
@@ -66,7 +66,11 @@ const open = ref(false);
 const renderedAnswer = computed(() => renderRichText(props.blok?.answer ?? {}));
 
 function toggle(e) {
+  const scrollY = window.scrollY;
   open.value = !open.value;
-  if (!open.value) e.currentTarget.blur();
+  e.currentTarget.blur();
+  nextTick(() => {
+    window.scrollTo({ top: scrollY, behavior: "instant" });
+  });
 }
 </script>
