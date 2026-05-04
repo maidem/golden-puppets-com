@@ -1,2 +1,41 @@
-// Storyblok-Komponenten werden automatisch von @storyblok/nuxt registriert (componentsDir: "~/storyblok")
-export default defineNuxtPlugin(() => {});
+import ContactForm from "~/storyblok/ContactForm.vue";
+import EventItem from "~/storyblok/EventItem.vue";
+import FaqItem from "~/storyblok/FaqItem.vue";
+import FaqSection from "~/storyblok/FaqSection.vue";
+import Feature from "~/storyblok/Feature.vue";
+import Footer from "~/storyblok/Footer.vue";
+import Grid from "~/storyblok/Grid.vue";
+import Header from "~/storyblok/Header.vue";
+import HeroHeader from "~/storyblok/HeroHeader.vue";
+import ImageGrid from "~/storyblok/ImageGrid.vue";
+import NavItem from "~/storyblok/NavItem.vue";
+import NewsArticle from "~/storyblok/NewsArticle.vue";
+import NewsOverview from "~/storyblok/NewsOverview.vue";
+import Page from "~/storyblok/Page.vue";
+import PretixEvents from "~/storyblok/PretixEvents.vue";
+import TeamMember from "~/storyblok/TeamMember.vue";
+import TeamSection from "~/storyblok/TeamSection.vue";
+import Teaser from "~/storyblok/Teaser.vue";
+import TwingleWidget from "~/storyblok/TwingleWidget.vue";
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.component("contact_form", ContactForm);
+  nuxtApp.vueApp.component("event_item", EventItem);
+  nuxtApp.vueApp.component("faq_item", FaqItem);
+  nuxtApp.vueApp.component("faq_section", FaqSection);
+  nuxtApp.vueApp.component("feature", Feature);
+  nuxtApp.vueApp.component("footer", Footer);
+  nuxtApp.vueApp.component("grid", Grid);
+  nuxtApp.vueApp.component("header", Header);
+  nuxtApp.vueApp.component("hero_header", HeroHeader);
+  nuxtApp.vueApp.component("image_grid", ImageGrid);
+  nuxtApp.vueApp.component("nav_item", NavItem);
+  nuxtApp.vueApp.component("news_article", NewsArticle);
+  nuxtApp.vueApp.component("news_overview", NewsOverview);
+  nuxtApp.vueApp.component("page", Page);
+  nuxtApp.vueApp.component("pretix_events", PretixEvents);
+  nuxtApp.vueApp.component("team_member", TeamMember);
+  nuxtApp.vueApp.component("team_section", TeamSection);
+  nuxtApp.vueApp.component("teaser", Teaser);
+  nuxtApp.vueApp.component("twingle_widget", TwingleWidget);
+});

@@ -18,7 +18,7 @@
         <!-- Logo: gelbe Box, nur rechts unten abgerundet (links = Screenrand) -->
         <NuxtLink
           to="/"
-          class="flex items-center justify-center shrink-0 bg-[#FFE600] rounded-br-[1.75rem]"
+          class="flex items-center shrink-0 bg-[#FFE600] rounded-br-[1.75rem] pl-8 md:pl-16"
           style="width: 704px"
         >
           <img
@@ -37,7 +37,7 @@
 
         <!-- Navigation: gelbe Box, nur links unten abgerundet (rechts = Screenrand) -->
         <nav
-          class="hidden md:flex flex-1 items-center justify-end px-8 gap-8 bg-[#FFE600] rounded-bl-[1.75rem]"
+          class="hidden md:flex flex-1 items-center justify-end px-8 md:px-16 gap-8 bg-[#FFE600] rounded-bl-[1.75rem]"
         >
           <StoryblokComponent
             v-for="navItem in blok.nav_menu"

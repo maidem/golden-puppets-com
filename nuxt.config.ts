@@ -36,7 +36,6 @@ export default defineNuxtConfig({
     apiOptions: {
       region: "eu",
     },
-    componentsDir: "~/storyblok",
   },
   components: {
     global: true,
