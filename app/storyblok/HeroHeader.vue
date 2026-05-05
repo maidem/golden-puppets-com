@@ -1,7 +1,7 @@
 <template>
   <section
     v-editable="blok"
-    class="relative flex items-end min-h-[80vh] overflow-hidden"
+    class="relative flex items-end min-h-[80vh] bg-black"
   >
     <!-- Background image -->
     <div
