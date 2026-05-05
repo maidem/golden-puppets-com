@@ -16,7 +16,7 @@
 
       <!-- Kreuz mit gelbem Hover-Kreis -->
       <span
-        class="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full group-hover:bg-[#FFE600]"
+        class="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full group-hover:bg-[#D0992A] group-open:bg-[#D0992A]"
         :style="{ transition: 'transform 0.3s ease, background-color 0.2s' }"
       >
         <svg
@@ -58,7 +58,7 @@ summary::-webkit-details-marker {
 
 .group[open] summary span:last-child {
   transform: rotate(45deg);
-  background-color: #ffe600;
+  background-color: #d0992a;
 }
 
 .animate-faq-open {

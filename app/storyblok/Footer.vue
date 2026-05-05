@@ -24,6 +24,10 @@ defineProps({ blok: Object });
 </script>
 
 <style scoped>
+.footer-nav :deep(a) {
+  color: black;
+}
+
 .footer-nav :deep(a::after) {
   display: none;
 }

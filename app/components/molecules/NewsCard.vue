@@ -36,7 +36,10 @@
 
       <div class="mt-auto pt-2">
         <NuxtLink :to="`/${link}`" class="inline-block">
-          <BaseButton variant="contrast">Mehr&nbsp;…</BaseButton>
+          <span
+            class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-sm px-5 py-2.5 rounded-full border-2 border-[#D0992A] hover:bg-transparent hover:text-[#D0992A] transition-colors duration-200"
+            >Mehr&nbsp;…</span
+          >
         </NuxtLink>
       </div>
     </div>

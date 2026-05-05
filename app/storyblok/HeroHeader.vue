@@ -1,7 +1,7 @@
 <template>
   <section
     v-editable="blok"
-    class="relative flex items-end min-h-[80vh] bg-black"
+    class="relative flex items-center justify-center min-h-[80vh] bg-black"
   >
     <!-- Background image -->
     <div
@@ -12,8 +12,10 @@
     <!-- Gradient overlay -->
     <div class="absolute inset-0 bg-black/55" />
 
-    <!-- Content: golden ratio position, left-aligned -->
-    <div class="relative z-10 w-full px-5 md:px-16 pb-[12vh]">
+    <!-- Content: centered -->
+    <div
+      class="relative z-10 w-full px-5 md:px-16 py-[10vh] flex flex-col items-center text-center"
+    >
       <!-- Yellow label / eyebrow -->
       <div
         v-if="blok.eyebrow"
@@ -24,10 +26,11 @@
 
       <!-- Headline -->
       <h1
-        class="font-black leading-[1.0] tracking-tight text-[2.75rem] md:text-6xl lg:text-7xl mb-6 max-w-3xl"
+        class="font-black leading-[1.05] tracking-tight mb-6 max-w-5xl mx-auto"
+        style="font-size: clamp(1.75rem, 5vw, 4.5rem)"
       >
         <span class="text-white block">{{ blok.headline }}</span>
-        <span v-if="blok.headline_accent" class="text-[#FFE600] block">{{
+        <span v-if="blok.headline_accent" class="text-[#D0992A] block">{{
           blok.headline_accent
         }}</span>
       </h1>
@@ -35,7 +38,7 @@
       <!-- Subline -->
       <p
         v-if="blok.subline"
-        class="text-white/90 text-base md:text-lg font-normal leading-relaxed max-w-md mb-10 tracking-wide"
+        class="text-white text-base md:text-xl font-medium leading-relaxed max-w-md mb-10 [text-shadow:0_2px_12px_rgba(0,0,0,0.8)]"
       >
         {{ blok.subline }}
       </p>
@@ -47,13 +50,13 @@
           :to="resolvedLink"
           :target="isExternal ? '_blank' : undefined"
           :rel="isExternal ? 'noopener noreferrer' : undefined"
-          class="inline-flex items-center gap-2 bg-[#FFE600] text-black font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent hover:bg-white transition-colors duration-200"
+          class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-base px-7 py-3.5 rounded-full border-2 border-[#D0992A] hover:bg-transparent hover:text-[#D0992A] transition-colors duration-200"
         >
           {{ blok.cta_label }}
         </NuxtLink>
         <span
           v-else
-          class="inline-flex items-center gap-2 bg-[#FFE600] text-black font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent"
+          class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent"
         >
           {{ blok.cta_label }}
         </span>

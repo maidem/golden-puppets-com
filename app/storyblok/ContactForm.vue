@@ -1,143 +1,225 @@
 <template>
-  <section v-editable="blok" class="py-16 px-4">
-    <div class="max-w-2xl mx-auto">
-      <header v-if="blok.headline || blok.intro" class="mb-8 text-center">
-        <h2
-          v-if="blok.headline"
-          class="text-3xl md:text-4xl font-bold text-gray-900"
-        >
-          {{ blok.headline }}
-        </h2>
-        <p v-if="blok.intro" class="mt-3 text-gray-500 whitespace-pre-line">
-          {{ blok.intro }}
+  <section v-editable="blok" class="py-12 md:py-16 px-5 md:px-16">
+    <!-- Überschrift -->
+    <h2
+      v-if="blok.headline"
+      class="text-3xl md:text-5xl font-black mb-10 md:mb-14"
+    >
+      {{ blok.headline }}
+    </h2>
+
+    <!-- 50/50 Layout -->
+    <div class="flex flex-col md:flex-row gap-0">
+      <!-- Links: Kontaktinfos -->
+      <div class="w-full md:w-1/2 pr-0 md:pr-16 pb-10 md:pb-0">
+        <p class="text-3xl md:text-5xl font-black pt-6 mb-6">
+          {{ blok.contact_title || "Kontakt" }}
         </p>
-      </header>
 
-      <form
-        :action="blok.action_url || '/webhook/contact.php'"
-        method="post"
-        class="space-y-5"
-        novalidate
-        @submit="onSubmit"
-      >
-        <!-- Honeypot (für Bots) -->
-        <div class="hidden" aria-hidden="true">
-          <label
-            >Website
-            <input
-              type="text"
-              name="website"
-              tabindex="-1"
-              autocomplete="off"
-            />
-          </label>
+        <div class="space-y-5 text-base">
+          <div v-if="blok.phone" class="flex flex-col gap-0.5">
+            <span
+              class="text-xs font-bold tracking-widest uppercase text-gray-400"
+              >Telefon</span
+            >
+            <a
+              :href="`tel:${blok.phone.replace(/\s/g, '')}`"
+              class="font-semibold hover:text-[#D0992A] transition-colors"
+            >
+              {{ blok.phone }}
+            </a>
+          </div>
+
+          <div v-if="blok.contact_email" class="flex flex-col gap-0.5">
+            <span
+              class="text-xs font-bold tracking-widest uppercase text-gray-400"
+              >E-Mail</span
+            >
+            <a
+              :href="`mailto:${blok.contact_email}`"
+              class="font-semibold hover:text-[#D0992A] transition-colors"
+            >
+              {{ blok.contact_email }}
+            </a>
+          </div>
+
+          <div v-if="blok.address" class="flex flex-col gap-0.5">
+            <span
+              class="text-xs font-bold tracking-widest uppercase text-gray-400"
+              >Adresse</span
+            >
+            <address
+              class="not-italic font-semibold whitespace-pre-line leading-relaxed"
+            >
+              {{ blok.address }}
+            </address>
+          </div>
+
+          <div v-if="blok.maps_url">
+            <a
+              :href="blok.maps_url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 border-2 border-[#D0992A] text-[#D0992A] font-bold text-sm px-5 py-2.5 rounded-full hover:bg-[#D0992A] hover:text-[#231F21] transition-colors duration-200 mt-2"
+            >
+              <svg
+                class="w-4 h-4 shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {{ blok.maps_label || "Route anzeigen" }}
+            </a>
+          </div>
         </div>
+      </div>
 
-        <input
-          type="hidden"
-          name="recipient"
-          :value="blok.recipient_email || ''"
-        />
-
-        <div>
-          <label
-            for="cf-name"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Name <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="cf-name"
-            type="text"
-            name="name"
-            required
-            autocomplete="name"
-            class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-          />
-        </div>
-
-        <div>
-          <label
-            for="cf-email"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            E-Mail <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="cf-email"
-            type="email"
-            name="email"
-            required
-            autocomplete="email"
-            class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-          />
-        </div>
-
-        <div>
-          <label
-            for="cf-subject"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Betreff <span class="text-red-500">*</span>
-          </label>
-          <input
-            id="cf-subject"
-            type="text"
-            name="subject"
-            required
-            class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-          />
-        </div>
-
-        <div>
-          <label
-            for="cf-message"
-            class="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Nachricht <span class="text-red-500">*</span>
-          </label>
-          <textarea
-            id="cf-message"
-            name="message"
-            rows="5"
-            required
-            class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-          />
-        </div>
-
-        <div class="flex items-start gap-2">
-          <input
-            id="cf-privacy"
-            type="checkbox"
-            name="privacy"
-            value="1"
-            required
-            class="mt-1 h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-          />
-          <label for="cf-privacy" class="text-sm text-gray-600">
-            <template v-if="privacyHref">
-              {{ privacyLabelStart }}
-              <NuxtLink :to="privacyHref" class="underline hover:text-gray-900">
-                Datenschutzerklärung
-              </NuxtLink>
-              {{ privacyLabelEnd }}
-            </template>
-            <template v-else>
-              {{
-                blok.privacy_label || "Ich akzeptiere die Datenschutzerklärung."
-              }}
-            </template>
-            <span class="text-red-500">*</span>
-          </label>
-        </div>
-
-        <button
-          type="submit"
-          class="w-full rounded bg-gray-900 text-white py-3 px-6 font-medium hover:bg-black transition"
+      <!-- Rechts: Formular -->
+      <div class="w-full md:w-1/2 pl-0 md:pl-16 pt-6">
+        <form
+          :action="blok.action_url || '/webhook/contact.php'"
+          method="post"
+          class="space-y-0"
+          novalidate
+          @submit="onSubmit"
         >
-          {{ blok.submit_label || "Senden" }}
-        </button>
-      </form>
+          <!-- Honeypot -->
+          <div class="hidden" aria-hidden="true">
+            <label
+              >Website
+              <input
+                type="text"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+              />
+            </label>
+          </div>
+          <input
+            type="hidden"
+            name="recipient"
+            :value="blok.recipient_email || ''"
+          />
+
+          <!-- Name -->
+          <div class="border-b-2 border-black py-4">
+            <label
+              for="cf-name"
+              class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-1"
+            >
+              Name <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="cf-name"
+              type="text"
+              name="name"
+              required
+              autocomplete="name"
+              class="w-full bg-transparent text-base font-medium focus:outline-none placeholder:text-gray-300"
+              placeholder="Dein Name"
+            />
+          </div>
+
+          <!-- E-Mail -->
+          <div class="border-b-2 border-black py-4">
+            <label
+              for="cf-email"
+              class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-1"
+            >
+              E-Mail <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="cf-email"
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="w-full bg-transparent text-base font-medium focus:outline-none placeholder:text-gray-300"
+              placeholder="deine@email.de"
+            />
+          </div>
+
+          <!-- Betreff -->
+          <div class="border-b-2 border-black py-4">
+            <label
+              for="cf-subject"
+              class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-1"
+            >
+              Betreff <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="cf-subject"
+              type="text"
+              name="subject"
+              required
+              class="w-full bg-transparent text-base font-medium focus:outline-none placeholder:text-gray-300"
+              placeholder="Worum geht's?"
+            />
+          </div>
+
+          <!-- Nachricht -->
+          <div class="border-b-2 border-black py-4">
+            <label
+              for="cf-message"
+              class="block text-xs font-bold tracking-widest uppercase text-gray-400 mb-1"
+            >
+              Nachricht <span class="text-red-500">*</span>
+            </label>
+            <textarea
+              id="cf-message"
+              name="message"
+              rows="4"
+              required
+              class="w-full bg-transparent text-base font-medium focus:outline-none resize-none placeholder:text-gray-300"
+              placeholder="Deine Nachricht…"
+            />
+          </div>
+
+          <!-- Datenschutz -->
+          <div class="flex items-start gap-3 pt-5">
+            <input
+              id="cf-privacy"
+              type="checkbox"
+              name="privacy"
+              value="1"
+              required
+              class="mt-0.5 h-4 w-4 shrink-0 rounded border-2 border-black accent-[#D0992A]"
+            />
+            <label for="cf-privacy" class="text-sm text-gray-500 leading-snug">
+              <template v-if="privacyHref">
+                {{ privacyLabelStart }}
+                <NuxtLink :to="privacyHref" class="underline hover:text-black"
+                  >Datenschutzerklärung</NuxtLink
+                >
+                {{ privacyLabelEnd }}
+              </template>
+              <template v-else>
+                {{
+                  blok.privacy_label ||
+                  "Ich akzeptiere die Datenschutzerklärung."
+                }}
+              </template>
+              <span class="text-red-500">*</span>
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <div class="pt-6">
+            <button
+              type="submit"
+              class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-base px-7 py-3.5 rounded-full border-2 border-[#D0992A] hover:bg-transparent hover:text-[#D0992A] transition-colors duration-200"
+            >
+              {{ blok.submit_label || "Nachricht senden" }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </template>
@@ -145,7 +227,6 @@
 <script setup>
 const props = defineProps({ blok: Object });
 
-// Privacy-Link auflösen (Storyblok multilink)
 const privacyHref = computed(() => {
   const link = props.blok?.privacy_link;
   if (!link) return "";
@@ -155,7 +236,6 @@ const privacyHref = computed(() => {
   return url.startsWith("/") || url.startsWith("http") ? url : `/${url}`;
 });
 
-// Label-Aufteilung: ersetzt das Wort "Datenschutzerklärung" mit verlinkter Variante
 const labelParts = computed(() => {
   const label =
     props.blok?.privacy_label || "Ich akzeptiere die Datenschutzerklärung.";
@@ -170,7 +250,6 @@ const privacyLabelStart = computed(() => labelParts.value.start);
 const privacyLabelEnd = computed(() => labelParts.value.end);
 
 function onSubmit(e) {
-  // Minimale Client-Validierung – Browser-Validierung übernimmt den Rest.
   const form = e.target;
   if (!form.checkValidity()) {
     e.preventDefault();

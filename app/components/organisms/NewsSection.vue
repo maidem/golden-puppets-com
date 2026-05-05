@@ -1,7 +1,7 @@
 <template>
   <!-- Mobile: eine gelbe Flaeche mit nativem Swipe -->
   <section
-    class="md:hidden bg-[#FFE600] border-t-2 border-b-2 border-black px-4 sm:px-5 pt-7 pb-7"
+    class="md:hidden bg-[#D0992A] border-t-2 border-b-2 border-black px-4 sm:px-5 pt-7 pb-7"
   >
     <BaseHeading tag="h2" size="lg" class="text-black mb-6">
       {{ headline }}
@@ -46,11 +46,11 @@
 
   <!-- Desktop: aufwendiger Split-Layout-Slider -->
   <section
-    class="hidden md:block relative bg-black border-t-2 border-b-2 border-black overflow-hidden"
+    class="hidden md:block relative bg-[#D0992A] border-t-2 border-b-2 border-[#D0992A] overflow-hidden"
   >
     <!-- Gelber Hintergrund rechts -->
     <div
-      class="absolute inset-y-0 left-[38.2%] right-0 bg-[#FFE600] rounded-tl-[1.75rem] rounded-bl-[1.75rem] pointer-events-none"
+      class="absolute inset-y-0 left-[38.2%] right-0 bg-[#231F21] rounded-tl-[1.75rem] rounded-bl-[1.75rem] pointer-events-none"
     ></div>
 
     <!-- Slide-Viewport: beginnt am Trenner, überschüssige Cards laufen rechts raus -->
@@ -116,16 +116,16 @@
 
     <!-- Linker Panel obendrauf -->
     <div
-      class="absolute left-0 top-0 bottom-0 w-[38.2%] bg-[#FFE600] rounded-tr-[1.75rem] rounded-br-[1.75rem] z-10 flex items-start pt-12 px-8 md:px-16 pointer-events-none"
+      class="absolute left-0 top-0 bottom-0 w-[38.2%] bg-[#231F21] rounded-tr-[1.75rem] rounded-br-[1.75rem] z-10 flex items-start pt-12 px-8 md:px-16 pointer-events-none"
     >
-      <BaseHeading tag="h2" size="lg" class="text-black pointer-events-auto">
+      <BaseHeading tag="h2" size="lg" class="text-white pointer-events-auto">
         {{ headline }}
       </BaseHeading>
     </div>
 
     <!-- 2px Trenner -->
     <div
-      class="absolute left-[38.2%] top-0 bottom-0 w-[2px] bg-black z-10 pointer-events-none"
+      class="absolute left-[38.2%] top-0 bottom-0 w-[2px] bg-[#D0992A] z-10 pointer-events-none"
     ></div>
   </section>
 </template>

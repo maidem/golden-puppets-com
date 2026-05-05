@@ -13,28 +13,33 @@
       </div>
     </div>
 
-    <header class="sticky top-0 z-50 bg-black">
+    <header class="sticky top-0 z-50 bg-[#D0992A]">
       <!-- Desktop -->
       <div class="hidden md:flex items-stretch min-h-[160px] pb-[2px]">
         <NuxtLink
           to="/"
-          class="flex items-center shrink-0 w-[38.2%] bg-[#FFE600] rounded-br-[1.75rem] pl-8 md:pl-16"
+          class="flex items-center shrink-0 w-[38.2%] bg-[#231F21] rounded-br-[1.75rem] pl-8 md:pl-16"
         >
           <img
             v-if="blok.logo?.filename"
-            :src="blok.logo.filename"
-            :alt="blok.logo.alt || 'Logo'"
-            class="h-12 w-auto"
+            :src="logoSrcDesktop"
+            :alt="blok.logo.alt || 'Golden Puppets Logo'"
+            class="h-28 w-auto"
+            loading="eager"
+            decoding="async"
           />
-          <span v-else class="text-2xl font-black tracking-tighter text-black">
-            GOLDEN<span class="text-gray-800">PUPPETS</span>
+          <span
+            v-else
+            class="text-2xl font-black tracking-tighter text-[#D0992A]"
+          >
+            GOLDEN<span class="text-gray-300">PUPPETS</span>
           </span>
         </NuxtLink>
 
-        <div class="w-[2px] shrink-0"></div>
+        <div class="w-[2px] shrink-0 bg-[#D0992A]"></div>
 
         <nav
-          class="flex-1 items-center justify-end px-8 md:px-16 gap-8 bg-[#FFE600] rounded-bl-[1.75rem] flex"
+          class="flex-1 items-center justify-end px-8 md:px-16 gap-8 bg-[#231F21] rounded-bl-[1.75rem] flex"
         >
           <StoryblokComponent
             v-for="navItem in blok.nav_menu"
@@ -47,7 +52,7 @@
       <!-- Mobile -->
       <div class="md:hidden relative">
         <div
-          class="bg-[#FFE600] min-h-[78px] rounded-b-[1.5rem] border-b-2 border-black px-4 flex items-center justify-between"
+          class="bg-[#D0992A] min-h-[78px] rounded-b-[1.5rem] border-b-2 border-black px-4 flex items-center justify-between"
         >
           <NuxtLink to="/" class="flex items-center gap-3 min-w-0">
             <span
@@ -67,9 +72,11 @@
 
             <img
               v-if="blok.logo?.filename"
-              :src="blok.logo.filename"
-              :alt="blok.logo.alt || 'Logo'"
-              class="h-8 w-auto"
+              :src="logoSrcMobile"
+              :alt="blok.logo.alt || 'Golden Puppets Logo'"
+              class="h-10 w-auto"
+              loading="eager"
+              decoding="async"
             />
             <span
               v-else
@@ -118,7 +125,7 @@
           <div
             v-if="menuOpen"
             id="mobile-nav-overlay"
-            class="fixed inset-0 z-[80] bg-[#FFE600] mobile-overlay-full"
+            class="fixed inset-0 z-[80] bg-[#D0992A] mobile-overlay-full"
           >
             <div
               class="h-[78px] border-b-2 border-black px-4 flex items-center justify-between"
@@ -138,10 +145,20 @@
                     <path d="M12 4v16" />
                   </svg>
                 </span>
+                <img
+                  v-if="blok.logo?.filename"
+                  :src="logoSrcMobile"
+                  :alt="blok.logo.alt || 'Golden Puppets Logo'"
+                  class="h-10 w-auto"
+                  loading="eager"
+                  decoding="async"
+                />
                 <span
+                  v-else
                   class="text-lg font-black tracking-tight text-black truncate"
-                  >GOLDENPUPPETS</span
                 >
+                  GOLDENPUPPETS
+                </span>
               </div>
 
               <button
@@ -190,6 +207,19 @@ const visibleEvents = computed(() => {
     : [];
   return items.filter((e) => e?.visible !== false);
 });
+
+const logoSrc = computed(() => props.blok?.logo?.filename || "");
+
+function toStoryblokImage(url, width) {
+  if (!url) return "";
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com")) {
+    return url;
+  }
+  return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
+}
+
+const logoSrcDesktop = computed(() => toStoryblokImage(logoSrc.value, 360));
+const logoSrcMobile = computed(() => toStoryblokImage(logoSrc.value, 220));
 
 const showEventBar = computed(
   () =>
