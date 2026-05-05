@@ -25,6 +25,13 @@
         { "value": "4", "name": "4 Spalten" }
       ],
       "default_value": "3"
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: ueber-uns",
+      "default_value": "ueber-uns",
+      "pos": 3
     }
   }
 }

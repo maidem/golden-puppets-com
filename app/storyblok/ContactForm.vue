@@ -1,33 +1,32 @@
 <template>
-  <section v-editable="blok" class="py-12 md:py-16 px-5 md:px-16">
-    <!-- Überschrift -->
-    <h2
-      v-if="blok.headline"
-      class="text-3xl md:text-5xl font-black mb-10 md:mb-14"
-    >
-      {{ blok.headline }}
-    </h2>
-
+  <section
+    v-editable="blok"
+    :id="blok.section_id || 'kontakt'"
+    class="py-12 md:py-16 px-5 md:px-16"
+  >
     <!-- 50/50 Layout -->
     <div class="flex flex-col md:flex-row gap-0">
       <!-- Links: Kontaktinfos -->
       <div class="w-full md:w-1/2 pr-0 md:pr-16 pb-10 md:pb-0">
-        <p class="text-3xl md:text-5xl font-black pt-6 mb-6">
+        <p class="text-3xl md:text-5xl font-black pt-6 mb-3">
           {{ blok.contact_title || "Kontakt" }}
         </p>
 
+        <p v-if="blok.headline" class="text-xl md:text-2xl font-semibold mb-8">
+          {{ blok.headline }}
+        </p>
+
         <div class="space-y-5 text-base">
-          <div v-if="blok.phone" class="flex flex-col gap-0.5">
+          <div v-if="blok.address" class="flex flex-col gap-0.5">
             <span
               class="text-xs font-bold tracking-widest uppercase text-gray-400"
-              >Telefon</span
+              >Adresse</span
             >
-            <a
-              :href="`tel:${blok.phone.replace(/\s/g, '')}`"
-              class="font-semibold hover:text-[#D0992A] transition-colors"
+            <address
+              class="not-italic font-semibold whitespace-pre-line leading-relaxed"
             >
-              {{ blok.phone }}
-            </a>
+              {{ blok.address }}
+            </address>
           </div>
 
           <div v-if="blok.contact_email" class="flex flex-col gap-0.5">
@@ -43,16 +42,17 @@
             </a>
           </div>
 
-          <div v-if="blok.address" class="flex flex-col gap-0.5">
+          <div v-if="blok.phone" class="flex flex-col gap-0.5">
             <span
               class="text-xs font-bold tracking-widest uppercase text-gray-400"
-              >Adresse</span
+              >Telefon</span
             >
-            <address
-              class="not-italic font-semibold whitespace-pre-line leading-relaxed"
+            <a
+              :href="`tel:${blok.phone.replace(/\s/g, '')}`"
+              class="font-semibold hover:text-[#D0992A] transition-colors"
             >
-              {{ blok.address }}
-            </address>
+              {{ blok.phone }}
+            </a>
           </div>
 
           <div v-if="blok.maps_url">
@@ -60,7 +60,7 @@
               :href="blok.maps_url"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 border-2 border-[#D0992A] text-[#D0992A] font-bold text-sm px-5 py-2.5 rounded-full hover:bg-[#D0992A] hover:text-[#231F21] transition-colors duration-200 mt-2"
+              class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-sm px-5 py-2.5 rounded-full border-2 border-[#D0992A] hover:bg-transparent hover:text-[#D0992A] transition-colors duration-200 mt-3"
             >
               <svg
                 class="w-4 h-4 shrink-0"
@@ -81,7 +81,7 @@
       </div>
 
       <!-- Rechts: Formular -->
-      <div class="w-full md:w-1/2 pl-0 md:pl-16 pt-6">
+      <div class="w-full md:w-1/2 pl-0 md:pl-16 pt-6 md:pt-20">
         <form
           :action="blok.action_url || '/webhook/contact.php'"
           method="post"

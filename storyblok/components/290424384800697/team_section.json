@@ -31,6 +31,13 @@
       "restrict_components": true,
       "component_whitelist": ["team_member"],
       "pos": 3
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: team",
+      "default_value": "team",
+      "pos": 4
     }
   }
 }

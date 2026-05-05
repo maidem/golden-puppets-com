@@ -17,6 +17,13 @@
       "description": "Storyblok-Ordner mit den Artikeln, z.B. 'aktuelles'",
       "default_value": "aktuelles",
       "pos": 1
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: aktuelles",
+      "default_value": "aktuelles",
+      "pos": 2
     }
   }
 }

@@ -1,5 +1,9 @@
 <template>
-  <section v-editable="blok" class="py-10 md:py-16">
+  <section
+    v-editable="blok"
+    :id="blok.section_id || 'faq'"
+    class="py-10 md:py-16"
+  >
     <h2
       v-if="blok.headline"
       class="text-3xl md:text-5xl font-black tracking-tight mb-8 md:mb-12 px-5 md:px-16"

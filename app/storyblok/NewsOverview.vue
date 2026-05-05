@@ -1,5 +1,5 @@
 <template>
-  <div v-editable="blok">
+  <div v-editable="blok" :id="blok.section_id || 'aktuelles'">
     <NewsSection
       :headline="blok.headline || 'Aktuelles'"
       :articles="mappedArticles"

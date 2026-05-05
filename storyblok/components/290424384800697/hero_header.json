@@ -46,6 +46,13 @@
         { "value": "outline", "name": "Outline" }
       ],
       "default_value": "primary"
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: home",
+      "default_value": "home",
+      "pos": 6
     }
   }
 }

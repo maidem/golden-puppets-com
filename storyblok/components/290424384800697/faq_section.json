@@ -15,6 +15,13 @@
       "restrict_components": true,
       "component_whitelist": ["faq_item"],
       "pos": 1
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: faq",
+      "default_value": "faq",
+      "pos": 2
     }
   }
 }

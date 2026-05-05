@@ -13,8 +13,14 @@
     "link": {
       "type": "multilink",
       "display_name": "Link",
-      "required": true,
+      "required": false,
       "pos": 1
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: kontakt. Wenn gesetzt, springt der Link auf /#kontakt.",
+      "pos": 2
     }
   }
 }

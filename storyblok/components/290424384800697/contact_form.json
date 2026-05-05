@@ -74,6 +74,13 @@
       "display_name": "Erfolgsmeldung",
       "default_value": "Vielen Dank! Ihre Nachricht wurde gesendet.",
       "pos": 12
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: kontakt",
+      "default_value": "kontakt",
+      "pos": 13
     }
   }
 }

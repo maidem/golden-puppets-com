@@ -1,6 +1,7 @@
 <template>
   <section
     v-editable="blok"
+    :id="blok.section_id || 'home'"
     class="relative flex items-center justify-center min-h-[80vh] bg-black"
   >
     <!-- Background image -->

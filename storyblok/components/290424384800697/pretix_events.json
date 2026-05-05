@@ -88,6 +88,13 @@
         { "value": "true", "name": "Immer anzeigen" },
         { "value": "false", "name": "Ausblenden" }
       ]
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: events",
+      "default_value": "events",
+      "pos": 12
     }
   }
 }

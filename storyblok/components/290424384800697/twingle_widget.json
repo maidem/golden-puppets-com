@@ -55,6 +55,13 @@
       "display_name": "Zusätzliche Parameter (Querystring)",
       "description": "Optional, ohne führendes ?. Beispiel: tw_min=10&tw_max=500",
       "pos": 7
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: spenden",
+      "default_value": "spenden",
+      "pos": 8
     }
   }
 }
