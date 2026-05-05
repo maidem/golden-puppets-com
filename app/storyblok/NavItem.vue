@@ -38,11 +38,13 @@ const resolvedTarget = computed(() => {
   if (normalizedSectionId.value) return `/#${normalizedSectionId.value}`;
 
   const link = props.blok?.link;
-  if (!link) return labelToSectionId.value ? `/#${labelToSectionId.value}` : "/";
+  if (!link)
+    return labelToSectionId.value ? `/#${labelToSectionId.value}` : "/";
 
   const isRootLink =
     (link.linktype === "url" && (link.url || "").trim() === "/") ||
-    (link.linktype !== "url" && (link.cached_url || link.url || "").trim() === "");
+    (link.linktype !== "url" &&
+      (link.cached_url || link.url || "").trim() === "");
 
   if (isRootLink && labelToSectionId.value) {
     return `/#${labelToSectionId.value}`;
