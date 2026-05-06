@@ -1,9 +1,9 @@
 <template>
   <div v-editable="blok">
-    <!-- Event-Leiste (über der Navigation) -->
-    <div v-if="showEventBar" class="bg-gray-900 text-white text-xs">
+    <!-- Event-Leiste -->
+    <div v-if="showEventBar" class="bg-black text-white text-xs">
       <div
-        class="container mx-auto px-4 py-2 flex flex-wrap items-center gap-x-6 gap-y-1"
+        class="max-w-[1400px] mx-auto px-4 md:px-16 py-2 flex flex-wrap items-center gap-x-6 gap-y-1"
       >
         <StoryblokComponent
           v-for="event in visibleEvents"
@@ -13,34 +13,38 @@
       </div>
     </div>
 
-    <header class="sticky top-0 z-50 bg-[#D0992A]">
-      <!-- Desktop -->
-      <div class="hidden md:flex items-stretch min-h-[160px] pb-[2px]">
-        <NuxtLink
-          to="/"
-          class="flex items-center shrink-0 w-[38.2%] bg-[#231F21] rounded-br-[1.75rem] pl-8 md:pl-16"
-        >
-          <img
-            v-if="blok.logo?.filename"
-            :src="logoSrcDesktop"
-            :alt="blok.logo.alt || 'Golden Puppets Logo'"
-            class="h-28 w-auto"
-            loading="eager"
-            decoding="async"
-          />
-          <span
-            v-else
-            class="text-2xl font-black tracking-tighter text-[#D0992A]"
+    <!-- Desktop Header -->
+    <header
+      class="fixed top-0 inset-x-0 z-50 hidden md:block bg-[#231F21] px-5 md:px-16"
+    >
+      <div
+        class="max-w-[1400px] mx-auto h-16 flex items-center justify-between"
+      >
+        <!-- Logo: erscheint wenn Hero-Logo aus Viewport -->
+        <Transition name="logo-drop">
+          <NuxtLink
+            v-if="showNavLogo"
+            to="/"
+            class="flex items-center shrink-0"
           >
-            GOLDEN<span class="text-gray-300">PUPPETS</span>
-          </span>
-        </NuxtLink>
+            <img
+              v-if="blok.logo?.filename"
+              :src="logoSrcDesktop"
+              :alt="blok.logo.alt || 'Golden Puppets'"
+              class="h-9 w-auto"
+              loading="eager"
+            />
+            <span
+              v-else
+              class="text-white font-black tracking-widest text-sm uppercase"
+            >
+              Golden <span class="text-[#D0992A]">Puppets</span>
+            </span>
+          </NuxtLink>
+        </Transition>
 
-        <div class="w-[2px] shrink-0 bg-[#D0992A]"></div>
-
-        <nav
-          class="flex-1 items-center justify-end px-8 md:px-16 gap-8 bg-[#231F21] rounded-bl-[1.75rem] flex"
-        >
+        <!-- Nav rechts -->
+        <nav class="flex items-center gap-3 ml-auto text-white">
           <StoryblokComponent
             v-for="navItem in blok.nav_menu"
             :key="navItem._uid"
@@ -48,150 +52,65 @@
           />
         </nav>
       </div>
+    </header>
 
-      <!-- Mobile -->
-      <div class="md:hidden relative">
-        <div
-          class="bg-[#D0992A] min-h-[78px] rounded-b-[1.5rem] border-b-2 border-black px-4 flex items-center justify-between"
+    <!-- Mobile Header -->
+    <header class="fixed top-0 inset-x-0 z-50 md:hidden bg-[#231F21]">
+      <div class="h-14 px-5 flex items-center justify-between">
+        <!-- Logo -->
+        <NuxtLink to="/" class="flex items-center">
+          <img
+            v-if="blok.logo?.filename"
+            :src="logoSrcMobile"
+            :alt="blok.logo.alt || 'Golden Puppets'"
+            class="h-8 w-auto"
+            loading="eager"
+          />
+          <span
+            v-else
+            class="text-white font-black tracking-widest text-sm uppercase"
+          >
+            GP
+          </span>
+        </NuxtLink>
+
+        <!-- Hamburger -->
+        <button
+          type="button"
+          class="flex flex-col justify-center gap-[5px] w-8 h-8"
+          :aria-expanded="menuOpen"
+          aria-label="Navigation umschalten"
+          @click="menuOpen = !menuOpen"
         >
-          <NuxtLink to="/" class="flex items-center gap-3 min-w-0">
-            <span
-              class="w-9 h-9 rounded-full border-2 border-black flex items-center justify-center shrink-0"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M4 12h16" />
-                <path d="M12 4v16" />
-              </svg>
-            </span>
-
-            <img
-              v-if="blok.logo?.filename"
-              :src="logoSrcMobile"
-              :alt="blok.logo.alt || 'Golden Puppets Logo'"
-              class="h-10 w-auto"
-              loading="eager"
-              decoding="async"
-            />
-            <span
-              v-else
-              class="text-lg font-black tracking-tight text-black truncate"
-            >
-              GOLDEN<span class="text-gray-800">PUPPETS</span>
-            </span>
-          </NuxtLink>
-
-          <button
-            type="button"
-            class="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center"
-            :aria-expanded="menuOpen"
-            aria-controls="mobile-nav-overlay"
-            aria-label="Navigation umschalten"
-            @click="menuOpen = !menuOpen"
-          >
-            <span class="sr-only">Menue</span>
-            <svg
-              v-if="!menuOpen"
-              viewBox="0 0 24 24"
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M3 6h18" />
-              <path d="M3 12h18" />
-              <path d="M3 18h18" />
-            </svg>
-            <svg
-              v-else
-              viewBox="0 0 24 24"
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path d="M6 6l12 12" />
-              <path d="M18 6l-12 12" />
-            </svg>
-          </button>
-        </div>
-
-        <Transition name="mobile-menu">
-          <div
-            v-if="menuOpen"
-            id="mobile-nav-overlay"
-            class="fixed inset-0 z-[80] bg-[#D0992A] mobile-overlay-full"
-          >
-            <div
-              class="h-[78px] border-b-2 border-black px-4 flex items-center justify-between"
-            >
-              <div class="flex items-center gap-3 min-w-0">
-                <span
-                  class="w-9 h-9 rounded-full border-2 border-black flex items-center justify-center shrink-0"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M4 12h16" />
-                    <path d="M12 4v16" />
-                  </svg>
-                </span>
-                <img
-                  v-if="blok.logo?.filename"
-                  :src="logoSrcMobile"
-                  :alt="blok.logo.alt || 'Golden Puppets Logo'"
-                  class="h-10 w-auto"
-                  loading="eager"
-                  decoding="async"
-                />
-                <span
-                  v-else
-                  class="text-lg font-black tracking-tight text-black truncate"
-                >
-                  GOLDENPUPPETS
-                </span>
-              </div>
-
-              <button
-                type="button"
-                class="w-11 h-11 rounded-full border-2 border-black flex items-center justify-center"
-                aria-label="Navigation schliessen"
-                @click="menuOpen = false"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M6 6l12 12" />
-                  <path d="M18 6l-12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <nav class="px-7 pt-8" @click="menuOpen = false">
-              <div class="flex flex-col items-start gap-5">
-                <StoryblokComponent
-                  v-for="navItem in blok.nav_menu"
-                  :key="navItem._uid"
-                  :blok="navItem"
-                />
-              </div>
-            </nav>
-          </div>
-        </Transition>
+          <span
+            class="block h-[2px] bg-white rounded-full transition-all duration-300 origin-center"
+            :class="menuOpen ? 'rotate-45 translate-y-[7px]' : ''"
+          />
+          <span
+            class="block h-[2px] bg-white rounded-full transition-all duration-300"
+            :class="menuOpen ? 'opacity-0 scale-x-0' : ''"
+          />
+          <span
+            class="block h-[2px] bg-white rounded-full transition-all duration-300 origin-center"
+            :class="menuOpen ? '-rotate-45 -translate-y-[7px]' : ''"
+          />
+        </button>
       </div>
+
+      <!-- Mobile Dropdown Nav -->
+      <Transition name="mobile-nav">
+        <nav
+          v-if="menuOpen"
+          class="bg-[#231F21] border-t border-white/10 px-5 pb-6 pt-4 flex flex-col gap-1"
+          @click="menuOpen = false"
+        >
+          <StoryblokComponent
+            v-for="navItem in blok.nav_menu"
+            :key="navItem._uid"
+            :blok="navItem"
+          />
+        </nav>
+      </Transition>
     </header>
   </div>
 </template>
@@ -200,6 +119,7 @@
 const route = useRoute();
 const props = defineProps({ blok: Object });
 const menuOpen = ref(false);
+const showNavLogo = ref(false);
 
 const visibleEvents = computed(() => {
   const items = Array.isArray(props.blok?.event_bar)
@@ -212,24 +132,35 @@ const logoSrc = computed(() => props.blok?.logo?.filename || "");
 
 function toStoryblokImage(url, width) {
   if (!url) return "";
-  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com")) {
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com"))
     return url;
-  }
   return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
 }
 
-const logoSrcDesktop = computed(() => toStoryblokImage(logoSrc.value, 360));
-const logoSrcMobile = computed(() => toStoryblokImage(logoSrc.value, 220));
+const logoSrcDesktop = computed(() => toStoryblokImage(logoSrc.value, 240));
+const logoSrcMobile = computed(() => toStoryblokImage(logoSrc.value, 160));
 
 const showEventBar = computed(
   () =>
     props.blok?.event_bar_visible !== false && visibleEvents.value.length > 0,
 );
 
+// Observe hero logo circle — show nav logo when hero logo leaves viewport
+onMounted(() => {
+  const heroLogo = document.getElementById("hero-logo-circle");
+  if (!heroLogo) return;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      showNavLogo.value = !entry.isIntersecting;
+    },
+    { threshold: 0, rootMargin: "0px 0px 0px 0px" },
+  );
+  observer.observe(heroLogo);
+  onBeforeUnmount(() => observer.disconnect());
+});
+
 watch(menuOpen, (isOpen) => {
-  if (process.client) {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-  }
+  if (process.client) document.body.style.overflow = isOpen ? "hidden" : "";
 });
 
 watch(
@@ -238,44 +169,67 @@ watch(
     menuOpen.value = false;
   },
 );
-
 onBeforeUnmount(() => {
   if (process.client) document.body.style.overflow = "";
 });
 </script>
 
 <style scoped>
-.mobile-menu-enter-active,
-.mobile-menu-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.mobile-menu-enter-active .mobile-overlay-full nav,
-.mobile-menu-leave-active .mobile-overlay-full nav {
+/* Logo drop-in from top */
+.logo-drop-enter-active {
   transition:
-    transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1),
+    transform 0.45s cubic-bezier(0.2, 1.4, 0.4, 1),
+    opacity 0.3s ease;
+}
+.logo-drop-leave-active {
+  transition:
+    transform 0.2s ease,
     opacity 0.2s ease;
 }
-
-.mobile-menu-enter-from,
-.mobile-menu-leave-to {
+.logo-drop-enter-from {
+  transform: translateY(-140%);
+  opacity: 0;
+}
+.logo-drop-leave-to {
+  transform: translateY(-60%);
   opacity: 0;
 }
 
-.mobile-menu-enter-from .mobile-overlay-full nav,
-.mobile-menu-leave-to .mobile-overlay-full nav {
+/* Mobile nav slide down */
+.mobile-nav-enter-active {
+  transition:
+    transform 0.3s cubic-bezier(0.2, 1, 0.4, 1),
+    opacity 0.25s ease;
+}
+.mobile-nav-leave-active {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+.mobile-nav-enter-from {
+  transform: translateY(-8px);
+  opacity: 0;
+}
+.mobile-nav-leave-to {
   transform: translateY(-8px);
   opacity: 0;
 }
 
-.mobile-overlay-full :deep(a) {
-  font-size: 1.25rem !important;
-  line-height: 1.3;
-  padding: 0 !important;
+/* Nav link styling */
+header :deep(a) {
+  color: #fff !important;
+  font-size: 0.78rem !important;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.mobile-overlay-full :deep(a::after) {
-  left: 0 !important;
-  right: 0 !important;
+/* Mobile links larger */
+nav.flex-col :deep(a) {
+  font-size: 1.1rem !important;
+  padding: 0.6rem 0 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: block;
+  width: 100%;
 }
 </style>

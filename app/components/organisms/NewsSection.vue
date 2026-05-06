@@ -1,272 +1,121 @@
 <template>
-  <!-- Mobile: eine gelbe Flaeche mit nativem Swipe -->
-  <section
-    class="md:hidden bg-[#D0992A] border-t-2 border-b-2 border-black px-4 sm:px-5 pt-7 pb-7"
-  >
-    <BaseHeading tag="h2" size="lg" class="text-black mb-6">
-      {{ headline }}
-    </BaseHeading>
-
-    <div
-      v-if="articles.length"
-      ref="mobileTrack"
-      class="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 scrollbar-hide cursor-grab active:cursor-grabbing"
-      @scroll.passive="onMobileScroll"
-      @mousedown="onMobileDragStart"
-      @mousemove="onMobileDragMove"
-      @mouseup="onMobileDragEnd"
-      @mouseleave="onMobileDragEnd"
-    >
-      <NewsCard
-        v-for="(article, i) in articles"
-        :key="article.slug"
-        :ref="(el) => (mobileCards[i] = el)"
-        :image="article.image"
-        :headline="article.headline"
-        :teaser-text="article.teaserText"
-        :link="article.slug"
-        class="shrink-0 w-[85vw] max-w-[330px] snap-start"
-      />
-    </div>
-
-    <div v-if="articles.length > 1" class="mt-3 flex items-center gap-2 px-0.5">
-      <button
-        v-for="(_, i) in articles"
-        :key="`mobile-dot-${i}`"
-        type="button"
-        class="w-2.5 h-2.5 rounded-full border-2 border-black transition-colors duration-200"
-        :class="mobileActiveIndex === i ? 'bg-black' : 'bg-transparent'"
-        :aria-label="`Gehe zu News ${i + 1}`"
-        @click="scrollMobileTo(i)"
-      />
-    </div>
-
-    <p v-else class="text-gray-700 text-sm">Keine Beitraege vorhanden.</p>
-  </section>
-
-  <!-- Desktop: aufwendiger Split-Layout-Slider -->
-  <section
-    class="hidden md:block relative bg-[#D0992A] border-t-2 border-b-2 border-[#D0992A] overflow-hidden"
-  >
-    <!-- Gelber Hintergrund rechts -->
-    <div
-      class="absolute inset-y-0 left-[38.2%] right-0 bg-[#231F21] rounded-tl-[1.75rem] rounded-bl-[1.75rem] pointer-events-none"
-    ></div>
-
-    <!-- Slide-Viewport: beginnt am Trenner, überschüssige Cards laufen rechts raus -->
-    <div
-      class="absolute left-[38.2%] top-0 right-0 bottom-0"
-      :class="dragging ? 'cursor-grabbing' : 'cursor-grab'"
-      @mousedown="onDragStart"
-      @mousemove="onDragMove"
-      @mouseup="onDragEnd"
-      @mouseleave="onDragEnd"
-      @touchstart.passive="onTouchStart"
-      @touchmove.passive="onTouchMove"
-      @touchend="onTouchEnd"
-    >
-      <!-- Inner Strip: bewegt sich per translateX -->
-      <div
-        ref="strip"
-        class="absolute top-12 flex gap-6 select-none"
-        :style="{
-          left: PEEK + 'px',
-          transform: `translateX(${offsetX}px)`,
-          transition: animating
-            ? 'transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94)'
-            : 'none',
-        }"
+  <section class="bg-[#f5f4f2] py-10 md:py-14 px-5 md:px-16">
+    <div class="max-w-[1400px] mx-auto">
+      <h2
+        class="text-3xl md:text-5xl font-black leading-[1.1] tracking-tight text-black mb-7"
       >
-        <NewsCard
-          v-for="(article, i) in articles"
-          :key="article.slug"
-          :image="article.image"
-          :headline="article.headline"
-          :teaser-text="article.teaserText"
-          :link="article.slug"
-          class="shrink-0 w-72"
-          :style="{ pointerEvents: dragging ? 'none' : 'auto' }"
-        />
-        <div v-if="!articles.length" class="text-gray-500 text-lg py-4">
-          Keine Beiträge vorhanden.
+        {{ headline }}<span class="text-[#D0992A]">.</span>
+      </h2>
+
+      <div v-if="articles.length">
+        <!-- Horizontal scroll track -->
+        <div
+          ref="trackRef"
+          style="
+            display: flex;
+            flex-direction: row;
+            gap: 1.5rem;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding-bottom: 0.5rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            cursor: grab;
+            user-select: none;
+          "
+          @scroll="onScroll"
+          @mousedown="onMouseDown"
+          @mousemove="onMouseMove"
+          @mouseup="onMouseUp"
+          @mouseleave="onMouseUp"
+        >
+          <div
+            v-for="(article, i) in articles"
+            :key="`${article.slug || 'article'}-${i}`"
+            style="flex: 0 0 19rem; scroll-snap-align: start"
+          >
+            <NewsCard
+              :image="article.image"
+              :headline="article.headline"
+              :teaser-text="article.teaserText"
+              :link="article.slug"
+            />
+          </div>
+          <div style="flex: 0 0 1px" aria-hidden="true" />
         </div>
       </div>
-    </div>
 
-    <!-- Spacer für Höhe -->
-    <div
-      class="ml-[38.2%] pt-12 pb-10 invisible pointer-events-none flex gap-6"
-    >
-      <div class="shrink-0 w-72 aspect-[4/5]"></div>
+      <p v-else class="text-gray-600 text-sm">Keine Beiträge vorhanden.</p>
     </div>
-
-    <!-- Dots -->
-    <div
-      v-if="articles.length > 1"
-      class="relative flex gap-3 pb-10 pt-0 pl-8 ml-[38.2%]"
-    >
-      <button
-        v-for="(_, i) in articles"
-        :key="i"
-        class="w-3 h-3 rounded-full border-2 border-black transition-colors duration-200"
-        :class="activeIndex === i ? 'bg-black' : 'bg-transparent'"
-        @click="snapTo(i)"
-      />
-    </div>
-
-    <!-- Linker Panel obendrauf -->
-    <div
-      class="absolute left-0 top-0 bottom-0 w-[38.2%] bg-[#231F21] rounded-tr-[1.75rem] rounded-br-[1.75rem] z-10 flex items-start pt-12 px-8 md:px-16 pointer-events-none"
-    >
-      <BaseHeading tag="h2" size="lg" class="text-white pointer-events-auto">
-        {{ headline }}
-      </BaseHeading>
-    </div>
-
-    <!-- 2px Trenner -->
-    <div
-      class="absolute left-[38.2%] top-0 bottom-0 w-[2px] bg-[#D0992A] z-10 pointer-events-none"
-    ></div>
   </section>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import NewsCard from "~/components/molecules/NewsCard.vue";
+import BaseHeading from "~/components/atoms/BaseHeading.vue";
 
 const props = defineProps({
   headline: { type: String, default: "Aktuelles" },
   articles: { type: Array, default: () => [] },
 });
 
-// Karte w-72 = 288px, gap-6 = 24px
-// PEEK: wie viel von der vorherigen Karte unter dem Panel herausschaut
-const CARD = 288;
-const GAP = 24;
-const PEEK = 40;
-
-const strip = ref(null);
+const trackRef = ref(null);
 const activeIndex = ref(0);
-const offsetX = ref(0);
-const animating = ref(false);
-const dragging = ref(false);
+const cardWidth = ref(0);
 
-const mobileTrack = ref(null);
-const mobileCards = ref([]);
-const mobileActiveIndex = ref(0);
-let mobileDragging = false;
-let mobileDragStartX = 0;
-let mobileDragStartScroll = 0;
+// Drag-to-scroll state
+const isDragging = ref(false);
+const dragStartX = ref(0);
+const dragScrollLeft = ref(0);
 
-// snapPos(i): wie weit der Strip nach links verschoben wird
-// i=0 → 0 (erste Karte bei PEEK px vom Trenner)
-// i>0 → -(i*(CARD+GAP) - PEEK) → vorherige Karte ragt PEEK px heraus
-function snapPos(i) {
-  return i === 0 ? 0 : -(i * (CARD + GAP) - PEEK);
-}
-
-function snapTo(i) {
-  const maxI = Math.max(0, props.articles.length - 1);
-  const clamped = Math.max(0, Math.min(i, maxI));
-  animating.value = true;
-  offsetX.value = snapPos(clamped);
-  activeIndex.value = clamped;
-}
-
-function snapToNearest() {
-  const current = offsetX.value;
-  let closest = 0;
-  let minDist = Infinity;
-  props.articles.forEach((_, i) => {
-    const d = Math.abs(snapPos(i) - current);
-    if (d < minDist) {
-      minDist = d;
-      closest = i;
+onMounted(() => {
+  if (trackRef.value) {
+    const firstCard = trackRef.value.children[0];
+    if (firstCard) {
+      cardWidth.value = firstCard.offsetWidth + 24;
     }
-  });
-  snapTo(closest);
+  }
+});
+
+function onScroll() {
+  if (!trackRef.value || !cardWidth.value) return;
+  activeIndex.value = Math.round(trackRef.value.scrollLeft / cardWidth.value);
 }
 
-// Mouse drag
-let dragStartX = 0;
-let dragStartOffset = 0;
-
-function onDragStart(e) {
-  dragging.value = true;
-  animating.value = false;
-  dragStartX = e.clientX;
-  dragStartOffset = offsetX.value;
-}
-function onDragMove(e) {
-  if (!dragging.value) return;
-  offsetX.value = dragStartOffset + (e.clientX - dragStartX);
-}
-function onDragEnd() {
-  if (!dragging.value) return;
-  dragging.value = false;
-  snapToNearest();
+function onMouseDown(e) {
+  isDragging.value = true;
+  dragStartX.value = e.pageX - trackRef.value.offsetLeft;
+  dragScrollLeft.value = trackRef.value.scrollLeft;
+  trackRef.value.style.cursor = "grabbing";
+  trackRef.value.style.scrollSnapType = "none";
 }
 
-// Touch
-let touchStartX = 0;
-let touchStartOffset = 0;
-
-function onTouchStart(e) {
-  dragging.value = true;
-  animating.value = false;
-  touchStartX = e.touches[0].clientX;
-  touchStartOffset = offsetX.value;
-}
-function onTouchMove(e) {
-  offsetX.value = touchStartOffset + (e.touches[0].clientX - touchStartX);
-}
-function onTouchEnd() {
-  dragging.value = false;
-  snapToNearest();
-}
-
-function onMobileScroll() {
-  if (!mobileTrack.value || !mobileCards.value.length) return;
-  const scrollLeft = mobileTrack.value.scrollLeft;
-  let closest = 0;
-  let minDist = Infinity;
-
-  mobileCards.value.forEach((card, i) => {
-    const el = card?.$el ?? card;
-    if (!el) return;
-    const dist = Math.abs(el.offsetLeft - scrollLeft);
-    if (dist < minDist) {
-      minDist = dist;
-      closest = i;
-    }
-  });
-
-  mobileActiveIndex.value = closest;
-}
-
-function scrollMobileTo(i) {
-  const card = mobileCards.value[i];
-  const el = card?.$el ?? card;
-  if (!mobileTrack.value || !el) return;
-  mobileTrack.value.scrollTo({ left: el.offsetLeft, behavior: "smooth" });
-  mobileActiveIndex.value = i;
-}
-
-function onMobileDragStart(e) {
-  if (!mobileTrack.value) return;
-  mobileDragging = true;
-  mobileDragStartX = e.clientX;
-  mobileDragStartScroll = mobileTrack.value.scrollLeft;
-}
-
-function onMobileDragMove(e) {
-  if (!mobileDragging || !mobileTrack.value) return;
+function onMouseMove(e) {
+  if (!isDragging.value) return;
   e.preventDefault();
-  mobileTrack.value.scrollLeft =
-    mobileDragStartScroll - (e.clientX - mobileDragStartX);
+  const x = e.pageX - trackRef.value.offsetLeft;
+  const walk = (x - dragStartX.value) * 1.2;
+  trackRef.value.scrollLeft = dragScrollLeft.value - walk;
 }
 
-function onMobileDragEnd() {
-  mobileDragging = false;
-  onMobileScroll();
+function onMouseUp() {
+  if (!isDragging.value) return;
+  isDragging.value = false;
+  trackRef.value.style.cursor = "grab";
+  trackRef.value.style.scrollSnapType = "x mandatory";
+}
+
+function goTo(index) {
+  if (!trackRef.value) return;
+  const w = cardWidth.value || 0;
+  trackRef.value.scrollTo({ left: index * w, behavior: "smooth" });
 }
 </script>
+
+<style scoped>
+div::-webkit-scrollbar {
+  display: none;
+}
+</style>

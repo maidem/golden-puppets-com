@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/montserrat";
 
 :root {
-  --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Montserrat Variable", ui-sans-serif, system-ui, sans-serif;
 
   /* Brand Colors — alle Anpassungen hier vornehmen */
   --color-brand-gold: #d0992a; /* Akzentfarbe: Trennlinie, Hover, Akzent-Text */

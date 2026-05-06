@@ -41,46 +41,52 @@
       "default_value": "Route anzeigen",
       "pos": 6
     },
+    "logo": {
+      "type": "asset",
+      "display_name": "Logo (links unten)",
+      "filetypes": ["images"],
+      "pos": 7
+    },
     "action_url": {
       "type": "text",
       "display_name": "Form Action URL",
       "default_value": "/webhook/contact.php",
-      "pos": 7
+      "pos": 8
     },
     "recipient_email": {
       "type": "text",
       "display_name": "Empfänger E-Mail (intern)",
-      "pos": 8
+      "pos": 9
     },
     "submit_label": {
       "type": "text",
       "display_name": "Submit Button Text",
       "default_value": "Nachricht senden",
-      "pos": 9
+      "pos": 10
     },
     "privacy_label": {
       "type": "text",
       "display_name": "Datenschutz-Label",
       "default_value": "Ich habe die Datenschutzerklärung gelesen und akzeptiere sie.",
-      "pos": 10
+      "pos": 11
     },
     "privacy_link": {
       "type": "multilink",
       "display_name": "Link zur Datenschutzerklärung",
-      "pos": 11
+      "pos": 12
     },
     "success_message": {
       "type": "text",
       "display_name": "Erfolgsmeldung",
       "default_value": "Vielen Dank! Ihre Nachricht wurde gesendet.",
-      "pos": 12
+      "pos": 13
     },
     "section_id": {
       "type": "text",
       "display_name": "Section ID (Anker)",
       "description": "Optional. Beispiel: kontakt",
       "default_value": "kontakt",
-      "pos": 13
+      "pos": 14
     }
   }
 }

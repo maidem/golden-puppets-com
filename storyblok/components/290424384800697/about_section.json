@@ -1,0 +1,61 @@
+{
+  "name": "about_section",
+  "display_name": "Über uns",
+  "is_root": false,
+  "is_nestable": true,
+  "schema": {
+    "headline": {
+      "type": "text",
+      "display_name": "Überschrift",
+      "pos": 0
+    },
+    "subline": {
+      "type": "text",
+      "display_name": "Unterzeile",
+      "pos": 1
+    },
+    "text": {
+      "type": "richtext",
+      "display_name": "Fließtext",
+      "pos": 2
+    },
+    "cta_label": {
+      "type": "text",
+      "display_name": "Button-Text",
+      "pos": 3
+    },
+    "cta_link": {
+      "type": "multilink",
+      "display_name": "Button-Link",
+      "pos": 4
+    },
+    "image": {
+      "type": "asset",
+      "display_name": "Bild",
+      "filetypes": ["images"],
+      "pos": 5
+    },
+    "image_alt": {
+      "type": "text",
+      "display_name": "Bild Alt-Text",
+      "pos": 6
+    },
+    "image_position": {
+      "type": "option",
+      "display_name": "Bild-Position",
+      "options": [
+        { "value": "right", "name": "Rechts" },
+        { "value": "left", "name": "Links" }
+      ],
+      "default_value": "right",
+      "pos": 7
+    },
+    "section_id": {
+      "type": "text",
+      "display_name": "Section ID (Anker)",
+      "description": "Optional. Beispiel: ueber-uns",
+      "default_value": "ueber-uns",
+      "pos": 8
+    }
+  }
+}

@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   },
   components: {
     global: true,
-    dirs: [{ path: "~/components", pathPrefix: false }],
+    dirs: [{ path: "~/app/components", pathPrefix: false }],
   },
   security: {
     // Im Visual Editor / Dev erst mal nur Report-Mode, damit nichts blockiert wird

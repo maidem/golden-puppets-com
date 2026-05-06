@@ -4,55 +4,24 @@
   "is_root": false,
   "is_nestable": true,
   "schema": {
+    "logo": {
+      "type": "asset",
+      "display_name": "Logo",
+      "filetypes": ["images"],
+      "pos": 0
+    },
     "bg_image": {
       "type": "asset",
       "display_name": "Background Image",
       "filetypes": ["images"],
-      "pos": 0
-    },
-    "headline": {
-      "type": "text",
-      "display_name": "Headline",
-      "required": true,
       "pos": 1
-    },
-    "headline_accent": {
-      "type": "text",
-      "display_name": "Headline (2. Zeile, gelb)",
-      "pos": 2
-    },
-    "subline": {
-      "type": "text",
-      "display_name": "Subline",
-      "pos": 3
-    },
-    "cta_label": {
-      "type": "text",
-      "display_name": "CTA Button Text",
-      "pos": 3
-    },
-    "cta_link": {
-      "type": "multilink",
-      "display_name": "CTA Button Link",
-      "pos": 4
-    },
-    "cta_variant": {
-      "type": "option",
-      "display_name": "CTA Button Style",
-      "pos": 5,
-      "options": [
-        { "value": "primary", "name": "Primary" },
-        { "value": "secondary", "name": "Secondary" },
-        { "value": "outline", "name": "Outline" }
-      ],
-      "default_value": "primary"
     },
     "section_id": {
       "type": "text",
       "display_name": "Section ID (Anker)",
       "description": "Optional. Beispiel: home",
       "default_value": "home",
-      "pos": 6
+      "pos": 2
     }
   }
 }

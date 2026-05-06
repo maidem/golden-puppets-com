@@ -2,65 +2,58 @@
   <section
     v-editable="blok"
     :id="blok.section_id || 'home'"
-    class="relative flex items-center justify-center min-h-[80vh] bg-black"
+    class="relative flex items-center justify-center min-h-[90vh] overflow-hidden bg-black"
   >
-    <!-- Background image -->
+    <!-- Full-width B&W background image -->
     <div
       v-if="blok.bg_image?.filename"
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale contrast-125"
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style="filter: grayscale(1) contrast(1.2) brightness(0.45)"
       :style="{ backgroundImage: `url(${blok.bg_image.filename})` }"
     />
-    <!-- Gradient overlay -->
-    <div class="absolute inset-0 bg-black/55" />
-
-    <!-- Content: centered -->
+    <!-- vignette for premium look -->
     <div
-      class="relative z-10 w-full px-5 md:px-16 py-[10vh] flex flex-col items-center text-center"
-    >
-      <!-- Yellow label / eyebrow -->
-      <div
-        v-if="blok.eyebrow"
-        class="inline-block bg-[#FFE600] text-black text-xs font-bold tracking-widest uppercase px-3 py-1 mb-5 rounded-sm"
-      >
-        {{ blok.eyebrow }}
+      class="absolute inset-0"
+      style="
+        background: radial-gradient(
+          ellipse at center,
+          transparent 30%,
+          rgba(0, 0, 0, 0.65) 100%
+        );
+      "
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20"
+    />
+
+    <!-- Logo with speed-from-left effect -->
+    <div class="relative z-10 flex items-center justify-center">
+      <!-- Speed lines trailing left -->
+      <div class="speed-trail" aria-hidden="true">
+        <span class="line line-1" />
+        <span class="line line-2" />
+        <span class="line line-3" />
+        <span class="line line-4" />
+        <span class="line line-5" />
       </div>
 
-      <!-- Headline -->
-      <h1
-        class="font-black leading-[1.05] tracking-tight mb-6 max-w-5xl mx-auto"
-        style="font-size: clamp(1.75rem, 5vw, 4.5rem)"
-      >
-        <span class="text-white block">{{ blok.headline }}</span>
-        <span v-if="blok.headline_accent" class="text-[#D0992A] block">{{
-          blok.headline_accent
-        }}</span>
-      </h1>
-
-      <!-- Subline -->
-      <p
-        v-if="blok.subline"
-        class="text-white text-base md:text-xl font-medium leading-relaxed max-w-md mb-10 [text-shadow:0_2px_12px_rgba(0,0,0,0.8)]"
-      >
-        {{ blok.subline }}
-      </p>
-
-      <!-- CTA -->
-      <div v-if="blok.cta_label">
-        <NuxtLink
-          v-if="resolvedLink"
-          :to="resolvedLink"
-          :target="isExternal ? '_blank' : undefined"
-          :rel="isExternal ? 'noopener noreferrer' : undefined"
-          class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-base px-7 py-3.5 rounded-full border-2 border-[#D0992A] hover:bg-transparent hover:text-[#D0992A] transition-colors duration-200"
-        >
-          {{ blok.cta_label }}
-        </NuxtLink>
-        <span
+      <!-- Logo circle -->
+      <div id="hero-logo-circle" class="logo-ring">
+        <img
+          v-if="blok.logo?.filename"
+          :src="logoSrc"
+          :alt="blok.logo?.alt || 'Golden Puppets'"
+          class="w-full h-full object-contain p-3"
+          loading="eager"
+        />
+        <div
           v-else
-          class="inline-flex items-center gap-2 bg-[#D0992A] text-[#231F21] font-bold text-base px-7 py-3.5 rounded-full border-2 border-transparent"
+          class="w-full h-full bg-[#231F21] flex items-center justify-center"
         >
-          {{ blok.cta_label }}
-        </span>
+          <span class="text-[#D0992A] font-black text-4xl tracking-tight"
+            >GP</span
+          >
+        </div>
       </div>
     </div>
   </section>
@@ -69,24 +62,101 @@
 <script setup>
 const props = defineProps({ blok: Object });
 
-// Link resolution logic for Storyblok Links (URL, Story, Email)
-const resolvedLink = computed(() => {
-  const link = props.blok?.cta_link;
-  if (!link || (!link.url && !link.cached_url && !link.email)) return "";
-
-  if (link.linktype === "email") return `mailto:${link.email}`;
-  if (link.linktype === "url") return link.url || "";
-
-  // Handling internal stories
-  const url = link.cached_url || "";
+function toStoryblokImage(url, width) {
   if (!url) return "";
-  return url.startsWith("/") ? url : `/${url}`;
-});
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com"))
+    return url;
+  return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
+}
 
-const isExternal = computed(() => {
-  return (
-    resolvedLink.value.startsWith("http") ||
-    resolvedLink.value.startsWith("mailto:")
-  );
-});
+const logoSrc = computed(() =>
+  toStoryblokImage(props.blok?.logo?.filename || "", 600),
+);
 </script>
+
+<style scoped>
+.logo-ring {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: #231f21;
+  border: 3px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(208, 153, 42, 0.4),
+    0 0 60px rgba(0, 0, 0, 0.6),
+    0 0 120px rgba(208, 153, 42, 0.08);
+}
+
+@media (min-width: 768px) {
+  .logo-ring {
+    width: 380px;
+    height: 380px;
+    border-width: 4px;
+  }
+}
+
+/* Speed trail container: positioned to the left of the circle */
+.speed-trail {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  padding-right: 2px;
+  pointer-events: none;
+}
+
+.line {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.75));
+  animation: streak 2.4s ease-in-out infinite;
+}
+
+.line-1 {
+  width: 160px;
+  opacity: 0.85;
+  animation-delay: 0s;
+}
+.line-2 {
+  width: 260px;
+  height: 1px;
+  opacity: 0.45;
+  animation-delay: 0.15s;
+}
+.line-3 {
+  width: 110px;
+  height: 3px;
+  opacity: 0.9;
+  animation-delay: 0.05s;
+}
+.line-4 {
+  width: 200px;
+  height: 1px;
+  opacity: 0.3;
+  animation-delay: 0.25s;
+}
+.line-5 {
+  width: 140px;
+  opacity: 0.6;
+  animation-delay: 0.1s;
+}
+
+@keyframes streak {
+  0%,
+  100% {
+    opacity: var(--base-opacity, 0.5);
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: calc(var(--base-opacity, 0.5) * 0.4);
+    transform: scaleX(0.85);
+  }
+}
+</style>

@@ -8,6 +8,8 @@
 </template>
 
 <script setup>
+import NewsSection from "../components/organisms/NewsSection.vue";
+
 const props = defineProps({ blok: Object });
 
 const storyblokApi = useStoryblokApi();

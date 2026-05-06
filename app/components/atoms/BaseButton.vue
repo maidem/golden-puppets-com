@@ -18,10 +18,10 @@ const buttonStyles = computed(() => {
   const base =
     "px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 active:scale-95";
   const variants = {
-    primary: "bg-[#00b3b0] text-white hover:bg-[#009a97] shadow-lg",
-    secondary: "bg-gray-800 text-white hover:bg-gray-900",
+    primary: "bg-[#231F21] text-white hover:bg-black shadow-lg",
+    secondary: "bg-[#231F21] text-white hover:bg-black",
     outline:
-      "border-2 border-[#00b3b0] text-[#00b3b0] hover:bg-[#00b3b0] hover:text-white",
+      "border-2 border-[#231F21] text-[#231F21] hover:bg-[#231F21] hover:text-white",
     contrast:
       "px-5 py-2.5 text-sm tracking-wide bg-black text-white border-2 border-gray-300 hover:bg-[#151515] shadow-lg shadow-black/40",
   };

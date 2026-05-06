@@ -1,47 +1,37 @@
 <template>
-  <details v-editable="blok" class="group border-t-2 border-black">
+  <details v-editable="blok" class="group bg-white rounded-2xl overflow-hidden">
     <summary
-      class="w-full flex items-center gap-4 md:gap-8 py-6 md:py-8 text-left px-5 md:px-16 list-none cursor-pointer"
+      class="w-full px-5 py-5 md:px-6 md:py-6 text-left list-none cursor-pointer select-none"
     >
-      <!-- Nummer -->
-      <span
-        class="shrink-0 w-[38.2%] text-4xl font-black text-black tabular-nums hidden md:block"
-      >
-        {{ String((blok._index ?? 0) + 1).padStart(2, "0") }}
-      </span>
-
-      <span class="flex-1 text-base md:text-lg font-semibold text-gray-900">
-        {{ blok.question }}
-      </span>
-
-      <!-- Kreuz mit gelbem Hover-Kreis -->
-      <span
-        class="shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full group-hover:bg-[#D0992A] group-open:bg-[#D0992A]"
-        :style="{ transition: 'transform 0.3s ease, background-color 0.2s' }"
-      >
-        <svg
-          class="w-5 h-5"
-          viewBox="0 0 20 20"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="square"
+      <div class="flex items-center justify-between gap-4">
+        <span
+          class="text-base md:text-lg font-semibold text-gray-900 leading-snug"
         >
-          <line x1="10" y1="0" x2="10" y2="20" />
-          <line x1="0" y1="10" x2="20" y2="10" />
-        </svg>
-      </span>
+          {{ blok.question }}
+        </span>
+
+        <span
+          class="faq-toggle shrink-0 w-9 h-9 flex items-center justify-center rounded-full bg-black text-white transition-transform duration-300"
+        >
+          <svg
+            class="w-4 h-4"
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          >
+            <line x1="8" y1="1" x2="8" y2="15" />
+            <line x1="1" y1="8" x2="15" y2="8" />
+          </svg>
+        </span>
+      </div>
     </summary>
 
-    <!-- Antwort: gleiche Flex-Struktur wie Summary, startet bei 704px -->
     <div
-      class="flex gap-4 md:gap-8 px-5 md:px-16 pb-6 md:pb-8 animate-faq-open"
+      class="px-5 pb-5 md:px-6 md:pb-6 text-gray-600 text-sm leading-relaxed animate-faq-open"
     >
-      <span class="shrink-0 w-[38.2%] hidden md:block" aria-hidden="true" />
-      <div
-        class="flex-1 max-w-[992px] text-gray-700 leading-relaxed prose prose-sm"
-        v-html="renderedAnswer"
-      />
+      <div class="prose prose-sm max-w-none" v-html="renderedAnswer" />
     </div>
   </details>
 </template>
@@ -56,9 +46,8 @@ summary::-webkit-details-marker {
   display: none;
 }
 
-.group[open] summary span:last-child {
+.group[open] summary .faq-toggle {
   transform: rotate(45deg);
-  background-color: #d0992a;
 }
 
 .animate-faq-open {

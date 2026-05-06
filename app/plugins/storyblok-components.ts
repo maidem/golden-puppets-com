@@ -1,3 +1,4 @@
+import AboutSection from "~/storyblok/AboutSection.vue";
 import ContactForm from "~/storyblok/ContactForm.vue";
 import EventItem from "~/storyblok/EventItem.vue";
 import FaqItem from "~/storyblok/FaqItem.vue";
@@ -17,6 +18,7 @@ import Teaser from "~/storyblok/Teaser.vue";
 import TwingleWidget from "~/storyblok/TwingleWidget.vue";
 
 export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.component("about_section", AboutSection);
   nuxtApp.vueApp.component("contact_form", ContactForm);
   nuxtApp.vueApp.component("event_item", EventItem);
   nuxtApp.vueApp.component("faq_item", FaqItem);

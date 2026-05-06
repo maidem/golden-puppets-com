@@ -12,9 +12,11 @@
     "sb:push": "storyblok components push --space 290424384800697 --separate-files --path storyblok"
   },
   "dependencies": {
+    "@fontsource-variable/montserrat": "^5.2.8",
     "@fontsource-variable/space-grotesk": "^5.2.10",
     "@storyblok/nuxt": "^10.1.4",
-    "nuxt": "^4.4.4"
+    "nuxt": "^4.4.4",
+    "swiper": "^12.1.4"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
