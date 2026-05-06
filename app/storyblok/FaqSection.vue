@@ -7,7 +7,7 @@
     <div class="max-w-[1400px] mx-auto">
       <h2
         v-if="blok.headline"
-        class="text-3xl md:text-5xl font-black tracking-tight mb-3"
+        class="text-2xl md:text-4xl font-bold tracking-tight mb-3"
       >
         {{ blok.headline }}<span class="text-[#D0992A]">.</span>
       </h2>

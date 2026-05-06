@@ -1,5 +1,5 @@
 <template>
-  <div v-editable="blok">
+  <div>
     <!-- Event-Leiste -->
     <div v-if="showEventBar" class="bg-black text-white text-xs">
       <div
@@ -45,11 +45,13 @@
 
         <!-- Nav rechts -->
         <nav class="flex items-center gap-3 ml-auto text-white">
-          <StoryblokComponent
+          <a
             v-for="navItem in blok.nav_menu"
             :key="navItem._uid"
-            :blok="navItem"
-          />
+            :href="navHref(navItem)"
+            class="relative inline-block text-white font-semibold px-3 py-2 text-[0.82rem] md:text-[0.9rem] tracking-[0.02em] pointer-events-auto after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:bg-white after:transition-all after:duration-300 after:scale-x-0 after:origin-left hover:after:scale-x-100"
+            >{{ navItem.label }}</a
+          >
         </nav>
       </div>
     </header>
@@ -104,11 +106,13 @@
           class="bg-[#231F21] border-t border-white/10 px-5 pb-6 pt-4 flex flex-col gap-1"
           @click="menuOpen = false"
         >
-          <StoryblokComponent
+          <a
             v-for="navItem in blok.nav_menu"
             :key="navItem._uid"
-            :blok="navItem"
-          />
+            :href="navHref(navItem)"
+            class="relative inline-block text-white font-semibold px-4 py-3 text-[0.9rem] tracking-[0.02em] pointer-events-auto"
+            >{{ navItem.label }}</a
+          >
         </nav>
       </Transition>
     </header>
@@ -144,6 +148,14 @@ const showEventBar = computed(
   () =>
     props.blok?.event_bar_visible !== false && visibleEvents.value.length > 0,
 );
+
+function navHref(item) {
+  if (item?.section_id) return `/#${item.section_id}`;
+  const url = item?.link?.cached_url || item?.link?.url || "";
+  if (!url || url === "home") return "/#home";
+  if (url.startsWith("#")) return `/${url}`;
+  return url.startsWith("/") ? url : `/${url}`;
+}
 
 // Observe hero logo circle — show nav logo when hero logo leaves viewport
 onMounted(() => {

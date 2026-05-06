@@ -20,7 +20,7 @@
 
           <h2
             v-if="displayHeadline"
-            class="text-3xl md:text-5xl font-black leading-[1.1] tracking-tight text-black mb-7"
+            class="text-2xl md:text-4xl font-bold leading-[1.1] tracking-tight text-black mb-7"
           >
             {{ displayHeadline }}<span class="text-[#D0992A]">.</span>
           </h2>

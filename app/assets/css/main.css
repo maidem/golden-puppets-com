@@ -12,6 +12,22 @@
 
 html {
   overflow-y: scroll;
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px;
+}
+
+@media (max-width: 768px) {
+  html {
+    scroll-padding-top: 60px;
+  }
+}
+
+/* Storyblok Bridge: Links/Buttons innerhalb von v-editable müssen klickbar bleiben */
+[data-blok-c] a,
+[data-blok-c] button {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto !important;
 }
 
 .scrollbar-hide {

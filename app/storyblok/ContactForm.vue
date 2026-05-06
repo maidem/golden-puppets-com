@@ -6,7 +6,7 @@
   >
     <div class="max-w-[1400px] mx-auto">
       <!-- Überschrift — gleiche Größe wie FAQ -->
-      <h2 class="text-3xl md:text-5xl font-black tracking-tight mb-8 md:mb-10">
+      <h2 class="text-2xl md:text-4xl font-bold tracking-tight mb-8 md:mb-10">
         {{ blok.contact_title || "Kontakt"
         }}<span class="text-[#D0992A]">.</span>
       </h2>

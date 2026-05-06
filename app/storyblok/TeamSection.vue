@@ -9,7 +9,7 @@
       <div v-if="blok.headline || blok.subline" class="mb-7">
         <h2
           v-if="blok.headline"
-          class="text-3xl md:text-5xl font-black leading-[1.1] tracking-tight text-black"
+          class="text-2xl md:text-4xl font-bold leading-[1.1] tracking-tight text-black"
         >
           {{ blok.headline }}<span class="text-[#D0992A]">.</span>
         </h2>

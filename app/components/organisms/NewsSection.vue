@@ -2,7 +2,7 @@
   <section class="bg-[#f5f4f2] py-10 md:py-14 px-5 md:px-16">
     <div class="max-w-[1400px] mx-auto">
       <h2
-        class="text-3xl md:text-5xl font-black leading-[1.1] tracking-tight text-black mb-7"
+        class="text-2xl md:text-4xl font-bold leading-[1.1] tracking-tight text-black mb-7"
       >
         {{ headline }}<span class="text-[#D0992A]">.</span>
       </h2>
