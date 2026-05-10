@@ -42,6 +42,12 @@ html {
   }
 }
 
+/* Pointer-Events während Transition durchlassen – sonst sind Links
+   für 120–180ms nach Klick nicht anklickbar */
+::view-transition {
+  pointer-events: none;
+}
+
 ::view-transition-old(root) {
   animation: 120ms ease fade-out;
 }

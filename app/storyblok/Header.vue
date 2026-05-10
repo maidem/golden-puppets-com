@@ -45,12 +45,12 @@
 
         <!-- Nav rechts -->
         <nav class="flex items-center gap-3 ml-auto text-white">
-          <a
+          <NuxtLink
             v-for="navItem in blok.nav_menu"
             :key="navItem._uid"
-            :href="navHref(navItem)"
+            :to="navHref(navItem)"
             class="relative inline-block text-white font-semibold px-3 py-2 text-[0.82rem] md:text-[0.9rem] tracking-[0.02em] pointer-events-auto after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:bg-white after:transition-all after:duration-300 after:scale-x-0 after:origin-left hover:after:scale-x-100"
-            >{{ navItem.label }}</a
+            >{{ navItem.label }}</NuxtLink
           >
         </nav>
       </div>
@@ -111,13 +111,13 @@
             class="w-full pb-8 pr-5 flex flex-col gap-2 items-end pointer-events-auto"
             @click.stop
           >
-            <a
+            <NuxtLink
               v-for="navItem in blok.nav_menu"
               :key="navItem._uid"
-              :href="navHref(navItem)"
+              :to="navHref(navItem)"
               class="relative inline-block text-black font-semibold px-6 py-3 text-lg tracking-[0.02em] pointer-events-auto hover:text-[#D0992A] transition-colors duration-200"
               @click="menuOpen = false"
-              >{{ navItem.label }}</a
+              >{{ navItem.label }}</NuxtLink
             >
           </nav>
         </div>
@@ -248,6 +248,12 @@ header :deep(a) {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+/* Router-Link active-Klasse soll keinen extra Stil zeigen */
+header :deep(a.router-link-active),
+header :deep(a.router-link-exact-active) {
+  color: #fff !important;
 }
 
 /* Mobile links larger */
