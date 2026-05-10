@@ -1,5 +1,5 @@
 <template>
-  <article v-editable="blok" class="bg-[#f6f5f2] pb-4 pt-20 md:pb-6 md:pt-24">
+  <article v-editable="blok" class="bg-[#f6f5f2] pb-4 pt-6 md:pb-6 md:pt-8">
     <div class="mx-auto w-[min(100%,72rem)] px-4 md:px-8">
       <!-- Back to overview -->
       <div class="mb-8">

@@ -4,7 +4,7 @@
     <StoryblokComponent v-if="config?.content" :blok="config.content" />
 
     <!-- Main Page Content -->
-    <main class="flex-1">
+    <main :class="['flex-1', route.path !== '/' ? 'pt-14 md:pt-16' : '']">
       <NuxtPage />
     </main>
 

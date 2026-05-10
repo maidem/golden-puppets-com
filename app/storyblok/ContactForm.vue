@@ -12,7 +12,7 @@
       </h2>
 
       <!-- 50/50 Karten-Layout -->
-      <div class="flex flex-col md:flex-row gap-5 md:gap-6 items-start">
+      <div class="flex flex-col md:flex-row gap-5 md:gap-6 items-stretch">
         <!-- Links: Kontaktinfos als weiße Karte -->
         <div class="w-full md:w-[38%] bg-white rounded-2xl p-6 md:p-8">
           <div v-if="blok.logo?.filename" class="mb-6">

@@ -164,7 +164,7 @@ const sectionSpacingClass = computed(() => {
 
   return isHomepageMode.value
     ? "py-10 md:py-16 bg-[#f5f4f2]"
-    : "pt-24 pb-16 md:pt-32 md:pb-24 bg-[#f5f4f2]";
+    : "pt-8 pb-16 md:pt-12 md:pb-24 bg-[#f5f4f2]";
 });
 
 // Fetch all articles
