@@ -1,10 +1,16 @@
 export default defineNuxtConfig({
   compatibilityDate: "2026-03-16",
+  experimental: {
+    viewTransition: true,
+  },
   runtimeConfig: {
     public: {
       storyblokVersion:
         process.env.STORYBLOK_VERSION ||
         (process.env.NODE_ENV === "production" ? "published" : "draft"),
+      mosparoEnabled: process.env.MOSPARO_ENABLED || "false",
+      mosparoScriptUrl: process.env.MOSPARO_SCRIPT_URL || "",
+      mosparoFormHost: process.env.MOSPARO_FORM_HOST || "",
     },
   },
   future: {

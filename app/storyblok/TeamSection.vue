@@ -18,77 +18,138 @@
         </p>
       </div>
 
-      <!-- Mobile: horizontal drag-scroll; Desktop: grid -->
-      <div
-        ref="scrollEl"
-        class="md:hidden flex gap-4 overflow-x-auto pb-4 cursor-grab active:cursor-grabbing"
-        style="
-          scroll-snap-type: x mandatory;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-        "
-        @mousedown="onMouseDown"
-        @mousemove="onMouseMove"
-        @mouseup="onMouseUp"
-        @mouseleave="onMouseUp"
-      >
-        <StoryblokComponent
-          v-for="member in blok.members"
-          :key="member._uid"
-          :blok="member"
-          style="scroll-snap-align: start; flex: 0 0 72vw; max-width: 280px"
-        />
-      </div>
+      <!-- Mobile: Stacked cards with drag (Swiper); Desktop: grid -->
+      <div>
+        <!-- Mobile Swiper -->
+        <div class="md:hidden">
+          <Swiper
+            v-if="(blok.members?.length || 0) >= 3"
+            :modules="mobileModules"
+            effect="cards"
+            :cards-effect="{
+              perSlideRotate: 2,
+              perSlideOffset: 14,
+              slideShadows: false,
+            }"
+            :loop="true"
+            :grab-cursor="true"
+          >
+            <SwiperSlide v-for="member in blok.members" :key="member._uid">
+              <div
+                class="bg-white rounded-2xl overflow-hidden shadow-sm flex flex-col"
+              >
+                <!-- Member Image -->
+                <div
+                  v-if="member.image?.filename"
+                  class="aspect-[4/3] overflow-hidden bg-gray-200"
+                >
+                  <img
+                    :src="optimizeImage(member.image.filename, 400)"
+                    :alt="member.name || 'Team Member'"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+                <div
+                  v-else
+                  class="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
+                >
+                  <span class="text-gray-300 text-4xl">👤</span>
+                </div>
 
-      <!-- Desktop grid -->
-      <div :class="['hidden md:grid gap-6', gridCols]">
-        <StoryblokComponent
-          v-for="member in blok.members"
-          :key="member._uid"
-          :blok="member"
-        />
+                <!-- Member Info -->
+                <div class="p-4 flex flex-col flex-grow">
+                  <h3 class="text-base font-bold text-black mb-1">
+                    {{ member.name || "Team Member" }}
+                  </h3>
+                  <p
+                    v-if="member.role"
+                    class="text-xs text-[#D0992A] font-semibold mb-2"
+                  >
+                    {{ member.role }}
+                  </p>
+                  <p
+                    v-if="member.description"
+                    class="text-gray-600 text-xs leading-relaxed line-clamp-2"
+                  >
+                    {{ member.description }}
+                  </p>
+                </div>
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+
+        <!-- Desktop grid with card styling -->
+        <div class="hidden md:grid grid-cols-4 gap-4">
+          <div
+            v-for="member in blok.members"
+            :key="member._uid"
+            class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col"
+          >
+            <!-- Member Image -->
+            <div
+              v-if="member.image?.filename"
+              class="aspect-square overflow-hidden bg-gray-200"
+            >
+              <img
+                :src="optimizeImage(member.image.filename, 400)"
+                :alt="member.name || 'Team Member'"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <div
+              v-else
+              class="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center"
+            >
+              <span class="text-gray-300 text-4xl">👤</span>
+            </div>
+
+            <!-- Member Info -->
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-base font-bold text-black mb-1">
+                {{ member.name || "Team Member" }}
+              </h3>
+              <p
+                v-if="member.role"
+                class="text-xs text-[#D0992A] font-semibold mb-2"
+              >
+                {{ member.role }}
+              </p>
+              <p
+                v-if="member.description"
+                class="text-gray-600 text-xs leading-relaxed line-clamp-2"
+              >
+                {{ member.description }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import { EffectCards } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/vue";
+import "swiper/css";
+import "swiper/css/effect-cards";
+
 const props = defineProps({ blok: Object });
 
-const gridCols = computed(() => {
-  const n = props.blok?.columns;
-  const map = {
-    2: "grid-cols-2",
-    3: "grid-cols-3",
-    4: "grid-cols-2 lg:grid-cols-4",
-    5: "grid-cols-3 lg:grid-cols-5",
-  };
-  const count = (props.blok?.members || []).length;
-  if (map[n]) return map[n];
-  if (count <= 3) return "grid-cols-3";
-  if (count === 4) return "grid-cols-2 lg:grid-cols-4";
-  return "grid-cols-3 lg:grid-cols-5";
-});
+const mobileModules = [EffectCards];
 
-const scrollEl = ref(null);
-let isDragging = false;
-let startX = 0;
-let scrollLeft = 0;
+function optimizeImage(url, width) {
+  if (!url) return "";
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com")) {
+    return url;
+  }
+  return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
+}
 
-function onMouseDown(e) {
-  isDragging = true;
-  startX = e.pageX - scrollEl.value.offsetLeft;
-  scrollLeft = scrollEl.value.scrollLeft;
-  scrollEl.value.style.scrollSnapType = "none";
-}
-function onMouseMove(e) {
-  if (!isDragging) return;
-  e.preventDefault();
-  const x = e.pageX - scrollEl.value.offsetLeft;
-  scrollEl.value.scrollLeft = scrollLeft - (x - startX);
-}
-function onMouseUp() {
-  isDragging = false;
-  if (scrollEl.value) scrollEl.value.style.scrollSnapType = "x mandatory";
+function onMobileSlideChange(swiper) {
+  // loop mode - no index tracking needed
 }
 </script>
+
+<style scoped></style>

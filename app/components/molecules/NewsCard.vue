@@ -8,7 +8,7 @@
         v-if="image"
         :src="image"
         :alt="headline"
-        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        class="w-full h-full object-cover"
       />
       <div
         v-else
@@ -38,7 +38,7 @@
         <NuxtLink :to="`/${link}`" class="inline-block">
           <span
             class="inline-flex items-center gap-2 bg-[#231F21] text-white font-bold text-sm px-5 py-2.5 rounded-full border-2 border-[#231F21] hover:bg-black hover:border-black transition-colors duration-200"
-            >Mehr&nbsp;…</span
+            >Mehr&nbsp;...</span
           >
         </NuxtLink>
       </div>
@@ -47,6 +47,8 @@
 </template>
 
 <script setup>
+import BaseHeading from "~/components/atoms/BaseHeading.vue";
+
 defineProps({
   image: { type: String, default: "" },
   headline: { type: String, required: true },

@@ -99,6 +99,7 @@
         <!-- Rechts: Formular als weiße Karte -->
         <div class="w-full md:w-[62%] bg-white rounded-2xl p-6 md:p-8">
           <form
+            ref="contactFormRef"
             :action="blok.action_url || '/webhook/contact.php'"
             method="post"
             class="space-y-4"
@@ -122,6 +123,9 @@
               name="recipient"
               :value="blok.recipient_email || ''"
             />
+            <input type="hidden" name="mosparo_submitToken" />
+            <input type="hidden" name="mosparo_validationSignature" />
+            <input type="hidden" name="mosparo_formData" />
 
             <!-- Name -->
             <div class="flex flex-col gap-1">
@@ -237,6 +241,13 @@
                 {{ blok.submit_label || "Nachricht senden" }}
               </button>
             </div>
+
+            <div
+              v-if="mosparoEnabled"
+              class="pt-3 text-[0.72rem] uppercase tracking-[0.08em] text-gray-400"
+            >
+              Spam-Schutz aktiv
+            </div>
           </form>
         </div>
       </div>
@@ -246,6 +257,18 @@
 
 <script setup>
 const props = defineProps({ blok: Object });
+const runtimeConfig = useRuntimeConfig();
+const contactFormRef = ref(null);
+
+const mosparoEnabled = computed(
+  () => String(runtimeConfig.public.mosparoEnabled || "") === "true",
+);
+const mosparoScriptUrl = computed(() =>
+  String(runtimeConfig.public.mosparoScriptUrl || "").trim(),
+);
+const mosparoFormHost = computed(() =>
+  String(runtimeConfig.public.mosparoFormHost || "").trim(),
+);
 
 const privacyHref = computed(() => {
   const link = props.blok?.privacy_link;
@@ -274,6 +297,41 @@ function onSubmit(e) {
   if (!form.checkValidity()) {
     e.preventDefault();
     form.reportValidity();
+    return;
+  }
+
+  if (!mosparoEnabled.value) return;
+
+  const token = form.querySelector("input[name='mosparo_submitToken']")?.value;
+  const signature = form.querySelector(
+    "input[name='mosparo_validationSignature']",
+  )?.value;
+  const formData = form.querySelector("input[name='mosparo_formData']")?.value;
+
+  if (!token || !signature || !formData) {
+    e.preventDefault();
+    alert("Spam-Schutz konnte nicht geladen werden. Bitte Seite neu laden.");
   }
 }
+
+onMounted(() => {
+  if (!mosparoEnabled.value || !mosparoScriptUrl.value || !contactFormRef.value)
+    return;
+
+  if (
+    document.querySelector(`script[data-mosparo='${mosparoScriptUrl.value}']`)
+  )
+    return;
+
+  const script = document.createElement("script");
+  script.src = mosparoScriptUrl.value;
+  script.async = true;
+  script.defer = true;
+  script.dataset.mosparo = mosparoScriptUrl.value;
+  script.dataset.formSelector = "form";
+  script.dataset.host = mosparoFormHost.value;
+  contactFormRef.value.dataset.mosparoHost = mosparoFormHost.value;
+  contactFormRef.value.dataset.mosparoEnabled = "true";
+  document.head.appendChild(script);
+});
 </script>

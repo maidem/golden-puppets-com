@@ -23,7 +23,7 @@
         <!-- Logo: erscheint wenn Hero-Logo aus Viewport -->
         <Transition name="logo-drop">
           <NuxtLink
-            v-if="showNavLogo"
+            v-if="shouldShowNavLogo"
             to="/"
             class="flex items-center shrink-0"
           >
@@ -60,7 +60,7 @@
     <header class="fixed top-0 inset-x-0 z-50 md:hidden bg-[#231F21]">
       <div class="h-14 px-5 flex items-center justify-between">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center">
+        <NuxtLink v-if="shouldShowNavLogo" to="/" class="flex items-center">
           <img
             v-if="blok.logo?.filename"
             :src="logoSrcMobile"
@@ -75,6 +75,7 @@
             GP
           </span>
         </NuxtLink>
+        <div v-else class="h-8 w-16" aria-hidden="true" />
 
         <!-- Hamburger -->
         <button
@@ -99,22 +100,28 @@
         </button>
       </div>
 
-      <!-- Mobile Dropdown Nav -->
-      <Transition name="mobile-nav">
-        <nav
+      <!-- Mobile Full-Page Menu Overlay -->
+      <Teleport to="body">
+        <div
           v-if="menuOpen"
-          class="bg-[#231F21] border-t border-white/10 px-5 pb-6 pt-4 flex flex-col gap-1"
+          class="fixed inset-0 z-[49] md:hidden bg-[#FFFFFF] flex items-end"
           @click="menuOpen = false"
         >
-          <a
-            v-for="navItem in blok.nav_menu"
-            :key="navItem._uid"
-            :href="navHref(navItem)"
-            class="relative inline-block text-white font-semibold px-4 py-3 text-[0.9rem] tracking-[0.02em] pointer-events-auto"
-            >{{ navItem.label }}</a
+          <nav
+            class="w-full pb-8 pr-5 flex flex-col gap-2 items-end pointer-events-auto"
+            @click.stop
           >
-        </nav>
-      </Transition>
+            <a
+              v-for="navItem in blok.nav_menu"
+              :key="navItem._uid"
+              :href="navHref(navItem)"
+              class="relative inline-block text-black font-semibold px-6 py-3 text-lg tracking-[0.02em] pointer-events-auto hover:text-[#D0992A] transition-colors duration-200"
+              @click="menuOpen = false"
+              >{{ navItem.label }}</a
+            >
+          </nav>
+        </div>
+      </Teleport>
     </header>
   </div>
 </template>
@@ -123,7 +130,13 @@
 const route = useRoute();
 const props = defineProps({ blok: Object });
 const menuOpen = ref(false);
-const showNavLogo = ref(false);
+const showNavLogoByHero = ref(false);
+let heroObserver = null;
+
+const isHomePage = computed(() => route.path === "/");
+const shouldShowNavLogo = computed(
+  () => !isHomePage.value || showNavLogoByHero.value,
+);
 
 const visibleEvents = computed(() => {
   const items = Array.isArray(props.blok?.event_bar)
@@ -152,24 +165,42 @@ const showEventBar = computed(
 function navHref(item) {
   if (item?.section_id) return `/#${item.section_id}`;
   const url = item?.link?.cached_url || item?.link?.url || "";
-  if (!url || url === "home") return "/#home";
+  if (!url || url === "home") return "/";
   if (url.startsWith("#")) return `/${url}`;
   return url.startsWith("/") ? url : `/${url}`;
 }
 
-// Observe hero logo circle — show nav logo when hero logo leaves viewport
-onMounted(() => {
-  const heroLogo = document.getElementById("hero-logo-circle");
-  if (!heroLogo) return;
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      showNavLogo.value = !entry.isIntersecting;
-    },
-    { threshold: 0, rootMargin: "0px 0px 0px 0px" },
-  );
-  observer.observe(heroLogo);
-  onBeforeUnmount(() => observer.disconnect());
-});
+function disconnectHeroObserver() {
+  if (heroObserver) {
+    heroObserver.disconnect();
+    heroObserver = null;
+  }
+}
+
+function syncHeroObserver() {
+  disconnectHeroObserver();
+
+  if (!isHomePage.value) {
+    showNavLogoByHero.value = true;
+    return;
+  }
+
+  showNavLogoByHero.value = false;
+
+  nextTick(() => {
+    const heroLogo = document.getElementById("hero-logo-circle");
+    if (!heroLogo) return;
+    heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        showNavLogoByHero.value = !entry.isIntersecting;
+      },
+      { threshold: 0, rootMargin: "-64px 0px 0px 0px" },
+    );
+    heroObserver.observe(heroLogo);
+  });
+}
+
+onMounted(syncHeroObserver);
 
 watch(menuOpen, (isOpen) => {
   if (process.client) document.body.style.overflow = isOpen ? "hidden" : "";
@@ -179,9 +210,12 @@ watch(
   () => route.fullPath,
   () => {
     menuOpen.value = false;
+    syncHeroObserver();
   },
 );
+
 onBeforeUnmount(() => {
+  disconnectHeroObserver();
   if (process.client) document.body.style.overflow = "";
 });
 </script>
@@ -204,26 +238,6 @@ onBeforeUnmount(() => {
 }
 .logo-drop-leave-to {
   transform: translateY(-60%);
-  opacity: 0;
-}
-
-/* Mobile nav slide down */
-.mobile-nav-enter-active {
-  transition:
-    transform 0.3s cubic-bezier(0.2, 1, 0.4, 1),
-    opacity 0.25s ease;
-}
-.mobile-nav-leave-active {
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-}
-.mobile-nav-enter-from {
-  transform: translateY(-8px);
-  opacity: 0;
-}
-.mobile-nav-leave-to {
-  transform: translateY(-8px);
   opacity: 0;
 }
 

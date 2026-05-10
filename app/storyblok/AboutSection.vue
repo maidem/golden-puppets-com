@@ -49,15 +49,6 @@
           class="w-full md:w-[46%] flex items-start relative"
           :class="imageRight ? 'md:justify-end' : 'md:justify-start'"
         >
-          <div
-            class="absolute inset-0 pointer-events-none hidden md:block"
-            aria-hidden="true"
-          >
-            <div
-              class="absolute right-2 top-8 h-[72%] w-[78%] rounded-[2rem] bg-[#F5F4F2]"
-            ></div>
-          </div>
-
           <div class="w-full md:max-w-[34rem] relative">
             <div
               class="hidden md:block absolute -inset-3 rounded-[2rem] border border-black/10 bg-white/35"

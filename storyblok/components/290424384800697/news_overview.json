@@ -1,7 +1,7 @@
 {
   "name": "news_overview",
   "display_name": "Aktuelles Übersicht",
-  "is_root": false,
+  "is_root": true,
   "is_nestable": true,
   "preview_field": "headline",
   "schema": {
@@ -11,19 +11,45 @@
       "default_value": "Aktuelles",
       "pos": 0
     },
+    "subline": {
+      "type": "text",
+      "display_name": "Untertext",
+      "description": "Optionaler Beschreibungstext unter der Überschrift",
+      "pos": 1
+    },
     "folder_slug": {
       "type": "text",
       "display_name": "Ordner Pfad",
       "description": "Storyblok-Ordner mit den Artikeln, z.B. 'aktuelles'",
       "default_value": "aktuelles",
-      "pos": 1
+      "pos": 2
     },
     "section_id": {
       "type": "text",
       "display_name": "Section ID (Anker)",
       "description": "Optional. Beispiel: aktuelles",
       "default_value": "aktuelles",
-      "pos": 2
+      "pos": 3
+    },
+    "is_overview_page": {
+      "type": "boolean",
+      "display_name": "Übersichtsseite",
+      "description": "Aktiviert für die vollständige Übersichtsseite mit allen Artikeln und Filtern",
+      "default_value": false,
+      "pos": 4
+    },
+    "enable_filters": {
+      "type": "boolean",
+      "display_name": "Filter aktivieren",
+      "description": "Zeigt Tag-Filter auf der Übersichtsseite an",
+      "default_value": true,
+      "pos": 5
+    },
+    "available_tags": {
+      "type": "textarea",
+      "display_name": "Filter-Tags (kommagetrennt)",
+      "description": "Tags die als Filter-Buttons angezeigt werden. Kommagetrennt, z.B.: KTM,Events,News,Turnier",
+      "pos": 6
     }
   }
 }

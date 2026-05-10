@@ -39,6 +39,12 @@ $fromAddress      = $env['CONTACT_FROM']      ?? (getenv('CONTACT_FROM')      ?:
 $successUrl       = $env['CONTACT_SUCCESS_URL'] ?? '/?contact=success';
 $errorUrl         = $env['CONTACT_ERROR_URL']   ?? '/?contact=error';
 
+$mosparoEnabledRaw = $env['MOSPARO_ENABLED'] ?? (getenv('MOSPARO_ENABLED') ?: 'false');
+$mosparoEnabled = filter_var($mosparoEnabledRaw, FILTER_VALIDATE_BOOLEAN);
+$mosparoVerifyUrl = trim((string)($env['MOSPARO_VERIFY_URL'] ?? (getenv('MOSPARO_VERIFY_URL') ?: '')));
+$mosparoApiKey = trim((string)($env['MOSPARO_API_KEY'] ?? (getenv('MOSPARO_API_KEY') ?: '')));
+$mosparoApiSecret = trim((string)($env['MOSPARO_API_SECRET'] ?? (getenv('MOSPARO_API_SECRET') ?: '')));
+
 // 3. Honeypot
 if (!empty($_POST['website'] ?? '')) {
     // Bot erkannt – wir tun so, als wäre alles ok
@@ -70,6 +76,9 @@ $subject = trim((string)($_POST['subject'] ?? ''));
 $message = trim((string)($_POST['message'] ?? ''));
 $privacy = (string)($_POST['privacy'] ?? '');
 $recipientRaw = trim((string)($_POST['recipient'] ?? ''));
+$mosparoSubmitToken = trim((string)($_POST['mosparo_submitToken'] ?? ''));
+$mosparoValidationSignature = trim((string)($_POST['mosparo_validationSignature'] ?? ''));
+$mosparoFormData = trim((string)($_POST['mosparo_formData'] ?? ''));
 
 // 6. Validierung
 $errors = [];
@@ -108,8 +117,30 @@ if (!$recipient) {
     $errors[] = 'Konfigurationsfehler: Kein Empfänger hinterlegt.';
 }
 
+if ($mosparoEnabled) {
+    if (!$mosparoVerifyUrl || !$mosparoApiKey || !$mosparoApiSecret) {
+        $errors[] = 'Konfigurationsfehler: Mosparo ist nicht korrekt konfiguriert.';
+    } elseif (!$mosparoSubmitToken || !$mosparoValidationSignature || !$mosparoFormData) {
+        $errors[] = 'Spam-Schutz unvollständig. Bitte Formular neu laden.';
+    }
+}
+
 if ($errors) {
     respondError($errors, $errorUrl);
+}
+
+if ($mosparoEnabled) {
+    $mosparoResult = verifyMosparo(
+        $mosparoVerifyUrl,
+        $mosparoApiKey,
+        $mosparoApiSecret,
+        $mosparoSubmitToken,
+        $mosparoValidationSignature,
+        $mosparoFormData
+    );
+    if (!$mosparoResult['ok']) {
+        respondError(['Spam-Schutz Prüfung fehlgeschlagen. Bitte erneut versuchen.'], $errorUrl);
+    }
 }
 
 // 7. Mail bauen
@@ -176,4 +207,69 @@ function respondError(array $errors, string $errorUrl): void
     }
     $sep = str_contains($errorUrl, '?') ? '&' : '?';
     redirect($errorUrl . $sep . 'msg=' . urlencode(implode(' ', $errors)));
+}
+
+function verifyMosparo(
+    string $verifyUrl,
+    string $apiKey,
+    string $apiSecret,
+    string $submitToken,
+    string $validationSignature,
+    string $formData
+): array {
+    $payload = http_build_query([
+        'submitToken' => $submitToken,
+        'validationSignature' => $validationSignature,
+        'formData' => $formData,
+    ]);
+
+    $auth = 'Authorization: Basic ' . base64_encode($apiKey . ':' . $apiSecret);
+    $headers = [
+        $auth,
+        'Content-Type: application/x-www-form-urlencoded',
+    ];
+
+    $response = false;
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init($verifyUrl);
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_HTTPHEADER => $headers,
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+    } else {
+        $context = stream_context_create([
+            'http' => [
+                'method' => 'POST',
+                'header' => implode("\r\n", $headers),
+                'content' => $payload,
+                'timeout' => 8,
+            ],
+        ]);
+        $response = @file_get_contents($verifyUrl, false, $context);
+    }
+
+    if (!$response) {
+        return ['ok' => false];
+    }
+
+    $json = json_decode($response, true);
+    if (!is_array($json)) {
+        return ['ok' => false];
+    }
+
+    if (array_key_exists('valid', $json)) {
+        return ['ok' => (bool)$json['valid']];
+    }
+
+    if (isset($json['verificationResult']['isValid'])) {
+        return ['ok' => (bool)$json['verificationResult']['isValid']];
+    }
+
+    return ['ok' => false];
 }

@@ -1,8 +1,8 @@
 <template>
-  <footer class="border-t border-gray-100 bg-white mt-24">
+  <footer class="bg-white mt-2 md:mt-4">
     <div class="max-w-[1400px] mx-auto px-5 md:px-16">
       <div
-        class="py-10 md:py-12 flex flex-col items-start md:flex-row md:items-center md:justify-end gap-6 md:gap-8"
+        class="py-4 md:py-5 flex flex-col items-start md:flex-row md:items-center md:justify-end gap-3 md:gap-4"
       >
         <div class="h-10 w-10 hidden" aria-hidden="true"></div>
 
