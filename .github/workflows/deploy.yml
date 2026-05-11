@@ -100,4 +100,9 @@ jobs:
         run: |
           # Coolify Deploy-Webhook über Tailscale-interne URL aufrufen
           # Der Auth-Token ist bereits in der URL eingebettet
-          curl -s --fail -X GET "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}"
+          HTTP_STATUS=$(curl -v -o /tmp/coolify_response.txt -w "%{http_code}" -X GET "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}" 2>&1 | tee /tmp/coolify_debug.txt; echo $?)
+          echo "--- Response body ---"
+          cat /tmp/coolify_response.txt || true
+          echo "--- Curl verbose ---"
+          cat /tmp/coolify_debug.txt || true
+          curl --fail -X GET "${{ secrets.COOLIFY_DEPLOY_WEBHOOK }}"
