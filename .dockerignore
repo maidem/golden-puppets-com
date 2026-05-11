@@ -1,0 +1,26 @@
+# Abhängigkeiten & Build-Artefakte
+node_modules/
+.output/
+.nuxt/
+dist/
+
+# Git & CI
+.git/
+.github/
+
+# Lokale Dev-Zertifikate
+*.pem
+*.key
+
+# Env-Dateien (Secrets nie ins Image)
+.env
+.env.*
+!.env.example
+
+# Storyblok-Logs und lokale Komponenten-Syncs
+storyblok/logs/
+storyblok/components/*/logs/
+
+# Editor & System
+.DS_Store
+*.log
