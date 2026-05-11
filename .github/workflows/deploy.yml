@@ -3,7 +3,7 @@ name: Build & Deploy
 on:
   # Ausgelöst durch den Storyblok-Webhook via PHP-Bridge
   repository_dispatch:
-    types: [ storyblok_publish ]
+    types: [storyblok_publish]
   # Automatisch bei Code-Push auf main
   push:
     branches:
@@ -60,7 +60,7 @@ jobs:
     if: github.event_name != 'repository_dispatch'
     permissions:
       contents: read
-      packages: write   # für ghcr.io push
+      packages: write # für ghcr.io push
 
     steps:
       - name: Checkout repository
