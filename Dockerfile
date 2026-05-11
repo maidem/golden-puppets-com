@@ -7,15 +7,14 @@ RUN npm ci
 
 COPY . .
 
-# Token wird nur zur Build-Zeit benötigt und gelangt nicht in das finale Image.
-# Coolify setzt den Token später als Runtime-Env-Variable.
-ARG STORYBLOK_DELIVERY_API_TOKEN
-ENV STORYBLOK_DELIVERY_API_TOKEN=$STORYBLOK_DELIVERY_API_TOKEN
-# Im Build immer draft, damit alle Inhalte geladen werden
+# Token wird per Docker Build Secret übergeben – landet nie als Layer im Image.
+# Im Build immer draft, damit alle Inhalte geladen werden.
 ENV STORYBLOK_VERSION=draft
 ENV NODE_ENV=production
 
-RUN npm run build
+RUN --mount=type=secret,id=storyblok_token \
+    STORYBLOK_DELIVERY_API_TOKEN=$(cat /run/secrets/storyblok_token) \
+    npm run build
 
 # ── Stage 2: Production Runner ────────────────────────────────────────────────
 FROM node:24-alpine AS runner

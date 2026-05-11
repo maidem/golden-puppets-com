@@ -83,9 +83,9 @@ jobs:
           push: true
           # Tag: ghcr.io/<org-oder-user>/golden-puppets-preview:latest
           tags: ghcr.io/${{ github.repository_owner }}/golden-puppets-preview:latest
-          # Token nur zur Build-Zeit (nicht im finalen Image-Layer)
-          build-args: |
-            STORYBLOK_DELIVERY_API_TOKEN=${{ secrets.STORYBLOK_PREVIEW_TOKEN }}
+          # Token via Docker Build Secret – landet nie als Image-Layer
+          secrets: |
+            storyblok_token=${{ secrets.STORYBLOK_PREVIEW_TOKEN }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
