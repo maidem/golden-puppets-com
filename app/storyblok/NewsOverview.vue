@@ -78,19 +78,27 @@
         />
       </div>
 
-      <!-- Mobile Swiper - nur im Homepage-Modus (alle Artikel für korrektes Loop) -->
+      <!-- Mobile Swiper - nur im Homepage-Modus -->
       <div v-if="isHomepageMode && mappedArticles.length > 0" class="md:hidden">
+        <!-- Navigation oben rechts -->
+        <div class="flex justify-end items-center gap-2 mb-3">
+          <button
+            @click="newsMobileSwiper?.slidePrev()"
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
+            aria-label="Vorheriger Artikel"
+          >‹</button>
+          <button
+            @click="newsMobileSwiper?.slideNext()"
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
+            aria-label="Nächster Artikel"
+          >›</button>
+        </div>
         <Swiper
-          v-if="mappedArticles.length >= 3"
-          :modules="mobileModules"
-          effect="cards"
-          :cards-effect="{
-            perSlideRotate: 0,
-            perSlideOffset: 10,
-            slideShadows: false,
-          }"
-          :loop="true"
+          v-if="mappedArticles.length > 0"
+          :loop="mappedArticles.length > 1"
           :grab-cursor="true"
+          :slides-per-view="1"
+          @swiper="onNewsMobileSwiper"
         >
           <SwiperSlide
             v-for="(article, i) in mappedArticles"
@@ -104,6 +112,36 @@
             />
           </SwiperSlide>
         </Swiper>
+      </div>
+
+      <!-- Pagination - nur im Übersichts-Modus -->
+      <div
+        v-if="!isHomepageMode && totalPages > 1"
+        class="mt-10 flex justify-center items-center gap-2"
+      >
+        <button
+          @click="currentPage--"
+          :disabled="currentPage === 1"
+          class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg disabled:opacity-30 hover:bg-black transition-colors"
+          aria-label="Vorherige Seite"
+        >‹</button>
+        <button
+          v-for="p in totalPages"
+          :key="p"
+          @click="currentPage = p"
+          :class="[
+            'w-9 h-9 flex items-center justify-center rounded-full font-semibold text-sm transition-colors',
+            p === currentPage
+              ? 'bg-[#231F21] text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+          ]"
+        >{{ p }}</button>
+        <button
+          @click="currentPage++"
+          :disabled="currentPage === totalPages"
+          class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg disabled:opacity-30 hover:bg-black transition-colors"
+          aria-label="Nächste Seite"
+        >›</button>
       </div>
 
       <!-- Show more button - nur im Homepage-Modus -->
@@ -128,11 +166,9 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { EffectCards } from "swiper/modules";
+import { computed, ref, watch } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-import "swiper/css/effect-cards";
 import NewsCard from "~/components/molecules/NewsCard.vue";
 
 const props = defineProps({ blok: Object });
@@ -141,9 +177,15 @@ const route = useRoute();
 const storyblokApi = useStoryblokApi();
 const runtimeConfig = useRuntimeConfig();
 const selectedTag = ref(null);
+const currentPage = ref(1);
+const newsMobileSwiper = ref(null);
 
+const ITEMS_PER_PAGE = 10;
 const displayLimit = 3;
-const mobileModules = [EffectCards];
+
+function onNewsMobileSwiper(swiper) {
+  newsMobileSwiper.value = swiper;
+}
 
 // Determine if this is homepage mode or overview page mode
 const isHomepageMode = computed(() => props.blok.is_overview_page !== true);
@@ -167,7 +209,7 @@ const sectionSpacingClass = computed(() => {
     : "pt-8 pb-16 md:pt-12 md:pb-24 bg-[#f5f4f2]";
 });
 
-// Fetch all articles
+// Fetch all articles (per_page: 100 to avoid default limit)
 const { data } = useAsyncData(
   `news-overview-${props.blok.folder_slug || "aktuelles"}`,
   () =>
@@ -176,6 +218,7 @@ const { data } = useAsyncData(
       starts_with: props.blok.folder_slug || "aktuelles",
       content_type: "news_article",
       sort_by: "created_at:desc",
+      per_page: 100,
     }),
 );
 
@@ -185,12 +228,11 @@ const mappedArticles = computed(() =>
     image: story.content.image?.filename || "",
     headline: story.content.headline || story.name,
     teaserText: story.content.teaser_text || "",
-    // Native Storyblok story tags (set per story in the Storyblok editor)
     tags: story.tag_list || [],
   })),
 );
 
-// Filter-Tags: from block textarea field (comma-separated) or auto-detect from articles
+// Filter-Tags
 const filterTags = computed(() => {
   if (props.blok.available_tags) {
     return props.blok.available_tags
@@ -204,47 +246,31 @@ const filterTags = computed(() => {
   return Array.from(tags).sort();
 });
 
-// Filter articles based on selected tag
+// Filter articles
 const filteredArticles = computed(() => {
   if (!selectedTag.value) return mappedArticles.value;
   return mappedArticles.value.filter((a) => a.tags.includes(selectedTag.value));
 });
 
-// Display articles - limited on homepage, all on overview page
+// Reset page on filter change (no scroll to top)
+watch(selectedTag, () => {
+  currentPage.value = 1;
+});
+
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(filteredArticles.value.length / ITEMS_PER_PAGE)),
+);
+
+const paginatedArticles = computed(() => {
+  const start = (currentPage.value - 1) * ITEMS_PER_PAGE;
+  return filteredArticles.value.slice(start, start + ITEMS_PER_PAGE);
+});
+
+// Display articles
 const displayedArticles = computed(() => {
-  if (isHomepageMode.value) {
-    return filteredArticles.value.slice(0, displayLimit);
-  }
-  return filteredArticles.value;
+  if (isHomepageMode.value) return filteredArticles.value.slice(0, displayLimit);
+  return paginatedArticles.value;
 });
 </script>
 
-<style scoped>
-.news-line-indicator {
-  position: relative;
-  height: 4px;
-  width: min(22rem, 100%);
-  border-radius: 999px;
-  background:
-    repeating-linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.16) 0,
-      rgba(0, 0, 0, 0.16) 1px,
-      transparent 1px,
-      transparent calc(100% / var(--segments))
-    ),
-    rgba(0, 0, 0, 0.12);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.news-line-progress {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #7c5a14 0%, #d0992a 100%);
-  transition: width 0.25s ease;
-}
-</style>
+<style scoped></style>

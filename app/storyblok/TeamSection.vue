@@ -18,21 +18,29 @@
         </p>
       </div>
 
-      <!-- Mobile: Stacked cards with drag (Swiper); Desktop: grid -->
+      <!-- Mobile: simple slider with nav; Desktop: grid -->
       <div>
         <!-- Mobile Swiper -->
         <div class="md:hidden">
+          <!-- Navigation oben rechts -->
+          <div class="flex justify-end items-center gap-2 mb-3">
+            <button
+              @click="teamMobileSwiper?.slidePrev()"
+              class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
+              aria-label="Vorheriges Teammitglied"
+            >‹</button>
+            <button
+              @click="teamMobileSwiper?.slideNext()"
+              class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
+              aria-label="Nächstes Teammitglied"
+            >›</button>
+          </div>
           <Swiper
-            v-if="(blok.members?.length || 0) >= 3"
-            :modules="mobileModules"
-            effect="cards"
-            :cards-effect="{
-              perSlideRotate: 2,
-              perSlideOffset: 14,
-              slideShadows: false,
-            }"
-            :loop="true"
+            v-if="(blok.members?.length || 0) > 0"
+            :loop="(blok.members?.length || 0) > 1"
             :grab-cursor="true"
+            :slides-per-view="1"
+            @swiper="onTeamMobileSwiper"
           >
             <SwiperSlide v-for="member in blok.members" :key="member._uid">
               <div
@@ -130,14 +138,17 @@
 </template>
 
 <script setup>
-import { EffectCards } from "swiper/modules";
+import { ref } from "vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
-import "swiper/css/effect-cards";
 
 const props = defineProps({ blok: Object });
 
-const mobileModules = [EffectCards];
+const teamMobileSwiper = ref(null);
+
+function onTeamMobileSwiper(swiper) {
+  teamMobileSwiper.value = swiper;
+}
 
 function optimizeImage(url, width) {
   if (!url) return "";
@@ -145,10 +156,6 @@ function optimizeImage(url, width) {
     return url;
   }
   return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
-}
-
-function onMobileSlideChange(swiper) {
-  // loop mode - no index tracking needed
 }
 </script>
 
