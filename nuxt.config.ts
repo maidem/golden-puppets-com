@@ -34,15 +34,17 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/main.css"],
   // X-Robots-Tag nur auf Preview-Instanz (NOINDEX=true in Coolify setzen)
-  ...(process.env.NOINDEX === 'true' ? {
-    routeRules: {
-      '/**': {
-        headers: {
-          'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet',
+  ...(process.env.NOINDEX === "true"
+    ? {
+        routeRules: {
+          "/**": {
+            headers: {
+              "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet",
+            },
+          },
         },
-      },
-    },
-  } : {}),
+      }
+    : {}),
 
   modules: ["@storyblok/nuxt", "nuxt-security"],
   vite: {

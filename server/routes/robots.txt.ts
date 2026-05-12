@@ -1,8 +1,8 @@
 export default defineEventHandler((event) => {
-  setHeader(event, 'Content-Type', 'text/plain')
+  setHeader(event, "Content-Type", "text/plain");
 
   // NOINDEX=true wird im Coolify-Preview-Container gesetzt
-  if (process.env.NOINDEX === 'true') {
+  if (process.env.NOINDEX === "true") {
     return `# Preview / Visual Editor — keine Indexierung
 User-agent: *
 Disallow: /
@@ -42,11 +42,11 @@ Disallow: /
 
 User-agent: cohere-ai
 Disallow: /
-`
+`;
   }
 
   // Produktion: alles erlaubt
   return `User-agent: *
 Allow: /
-`
-})
+`;
+});
