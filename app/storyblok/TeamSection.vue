@@ -28,12 +28,16 @@
               @click="teamMobileSwiper?.slidePrev()"
               class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
               aria-label="Vorheriges Teammitglied"
-            >‹</button>
+            >
+              ‹
+            </button>
             <button
               @click="teamMobileSwiper?.slideNext()"
               class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
               aria-label="Nächstes Teammitglied"
-            >›</button>
+            >
+              ›
+            </button>
           </div>
           <Swiper
             v-if="(blok.members?.length || 0) > 0"

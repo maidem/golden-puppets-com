@@ -86,12 +86,16 @@
             @click="newsMobileSwiper?.slidePrev()"
             class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
             aria-label="Vorheriger Artikel"
-          >‹</button>
+          >
+            ‹
+          </button>
           <button
             @click="newsMobileSwiper?.slideNext()"
             class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg hover:bg-black transition-colors"
             aria-label="Nächster Artikel"
-          >›</button>
+          >
+            ›
+          </button>
         </div>
         <Swiper
           v-if="mappedArticles.length > 0"
@@ -124,7 +128,9 @@
           :disabled="currentPage === 1"
           class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg disabled:opacity-30 hover:bg-black transition-colors"
           aria-label="Vorherige Seite"
-        >‹</button>
+        >
+          ‹
+        </button>
         <button
           v-for="p in totalPages"
           :key="p"
@@ -135,13 +141,17 @@
               ? 'bg-[#231F21] text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200',
           ]"
-        >{{ p }}</button>
+        >
+          {{ p }}
+        </button>
         <button
           @click="currentPage++"
           :disabled="currentPage === totalPages"
           class="w-9 h-9 flex items-center justify-center rounded-full bg-[#231F21] text-white font-bold text-lg disabled:opacity-30 hover:bg-black transition-colors"
           aria-label="Nächste Seite"
-        >›</button>
+        >
+          ›
+        </button>
       </div>
 
       <!-- Show more button - nur im Homepage-Modus -->
@@ -268,7 +278,8 @@ const paginatedArticles = computed(() => {
 
 // Display articles
 const displayedArticles = computed(() => {
-  if (isHomepageMode.value) return filteredArticles.value.slice(0, displayLimit);
+  if (isHomepageMode.value)
+    return filteredArticles.value.slice(0, displayLimit);
   return paginatedArticles.value;
 });
 </script>
