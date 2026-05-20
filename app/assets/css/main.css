@@ -30,31 +30,6 @@ html {
   pointer-events: auto !important;
 }
 
-/* View Transitions – sanftes Crossfade bei Seitenwechsel */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-/* Pointer-Events während Transition durchlassen – sonst sind Links
-   für 120–180ms nach Klick nicht anklickbar */
-::view-transition {
-  pointer-events: none;
-}
-
-::view-transition-old(root) {
-  animation: 120ms ease fade-out;
-}
-::view-transition-new(root) {
-  animation: 180ms ease fade-in;
-}
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
