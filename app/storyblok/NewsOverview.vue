@@ -32,15 +32,13 @@
         class="mb-8 flex items-center gap-3 p-4 rounded-xl border-2 border-dashed border-[#D0992A] bg-[#fdf8ef]"
       >
         <span class="text-[#7c5a14] text-sm font-semibold">Visual Editor</span>
-        <a
-          :href="`https://app.storyblok.com/#/me/spaces/290424384800697/stories/155742849240851`"
-          target="_blank"
-          rel="noopener"
+        <button
+          @click.stop="openNewArticle"
           class="inline-flex items-center gap-2 bg-[#D0992A] hover:bg-[#b8821f] text-white font-bold text-sm px-5 py-2 rounded-full transition-colors duration-200"
         >
           <span class="text-lg leading-none">+</span>
           Neuen Artikel anlegen
-        </a>
+        </button>
         <span class="text-xs text-[#7c5a14]"
           >Wird im Ordner „Aktuelles" gespeichert · Seite danach neu laden</span
         >
@@ -216,6 +214,14 @@ onMounted(() => {
   isInEditor.value =
     "storyblok" in window || window.location.search.includes("_storyblok");
 });
+
+function openNewArticle() {
+  window.open(
+    "https://app.storyblok.com/#/me/spaces/290424384800697/stories/155742849240851",
+    "_blank",
+    "noopener",
+  );
+}
 
 const ITEMS_PER_PAGE = 10;
 const displayLimit = 3;
