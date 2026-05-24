@@ -26,6 +26,26 @@
         </p>
       </div>
 
+      <!-- Editor-only: Neuen Artikel anlegen -->
+      <div
+        v-if="isInEditor"
+        class="mb-8 flex items-center gap-3 p-4 rounded-xl border-2 border-dashed border-[#D0992A] bg-[#fdf8ef]"
+      >
+        <span class="text-[#7c5a14] text-sm font-semibold">Visual Editor</span>
+        <a
+          :href="`https://app.storyblok.com/#/me/spaces/290424384800697/stories/155742849240851`"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 bg-[#D0992A] hover:bg-[#b8821f] text-white font-bold text-sm px-5 py-2 rounded-full transition-colors duration-200"
+        >
+          <span class="text-lg leading-none">+</span>
+          Neuen Artikel anlegen
+        </a>
+        <span class="text-xs text-[#7c5a14]"
+          >Wird im Ordner „Aktuelles" gespeichert · Seite danach neu laden</span
+        >
+      </div>
+
       <!-- Filter Section - nur im Überseite-Modus -->
       <div
         v-if="!isHomepageMode && blok.enable_filters && filterTags.length > 0"
@@ -190,6 +210,13 @@ const selectedTag = ref(null);
 const currentPage = ref(1);
 const newsMobileSwiper = ref(null);
 
+// Detect Storyblok Visual Editor context
+const isInEditor = ref(false);
+onMounted(() => {
+  isInEditor.value =
+    "storyblok" in window || window.location.search.includes("_storyblok");
+});
+
 const ITEMS_PER_PAGE = 10;
 const displayLimit = 3;
 
@@ -238,7 +265,9 @@ const mappedArticles = computed(() =>
     image: story.content.image?.filename || "",
     headline: story.content.headline || story.name,
     teaserText: story.content.teaser_text || "",
-    tags: story.tag_list || [],
+    tags: story.content.tags?.length
+      ? story.content.tags
+      : story.tag_list || [],
   })),
 );
 

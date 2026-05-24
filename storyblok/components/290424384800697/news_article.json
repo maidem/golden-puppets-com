@@ -33,6 +33,17 @@
       "display_name": "Bildergalerie",
       "filetypes": ["images"],
       "pos": 4
+    },
+    "tags": {
+      "type": "options",
+      "display_name": "Kategorien",
+      "description": "Weise diesen Artikel einer oder mehreren Kategorien zu",
+      "options": [
+        { "name": "Verein", "value": "Verein" },
+        { "name": "Senioren", "value": "Senioren" },
+        { "name": "Sonstiges", "value": "Sonstiges" }
+      ],
+      "pos": 5
     }
   }
 }
