@@ -262,21 +262,14 @@ const mappedArticles = computed(() =>
   })),
 );
 
-// Filter-Tags: Datasource hat Vorrang, dann available_tags-Override, dann Auto-Detect
+// Filter-Tags: aus Datasource "news-kategorien", Fallback auto-detect
 const filterTags = computed(() => {
-  // 1. Override via available_tags textarea (für Sonderfälle)
-  if (props.blok.available_tags) {
-    return props.blok.available_tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-  }
-  // 2. Aus Datasource "news-kategorien"
+  // 1. Aus Datasource "news-kategorien"
   const dsEntries = datasourceData.value?.data?.datasource_entries;
   if (dsEntries?.length) {
     return dsEntries.map((e) => e.value).filter(Boolean);
   }
-  // 3. Fallback: auto-detect from article tags
+  // 2. Fallback: auto-detect from article tags
   const tags = new Set();
   mappedArticles.value.forEach((a) => a.tags.forEach((t) => tags.add(t)));
   return Array.from(tags).sort();

@@ -44,12 +44,6 @@
       "description": "Zeigt Tag-Filter auf der Übersichtsseite an",
       "default_value": true,
       "pos": 5
-    },
-    "available_tags": {
-      "type": "textarea",
-      "display_name": "Filter-Tags überschreiben (optional)",
-      "description": "Leer lassen: Filter-Tags werden automatisch aus der Datasource 'News Kategorien' geladen. Nur füllen, wenn du hier eine andere Auswahl erzwingen willst (kommagetrennt).",
-      "pos": 6
     }
   }
 }
