@@ -18,14 +18,14 @@
       class="fixed top-0 inset-x-0 z-50 hidden md:block bg-[#231F21] px-5 md:px-16"
     >
       <div
-        class="max-w-[1400px] mx-auto h-16 flex items-center justify-between"
+        class="relative max-w-[1400px] mx-auto h-16 flex items-center justify-center"
       >
         <!-- Logo: erscheint wenn Hero-Logo aus Viewport -->
         <Transition name="logo-drop">
           <NuxtLink
             v-if="shouldShowNavLogo"
             to="/"
-            class="flex items-center shrink-0"
+            class="absolute left-0 flex items-center shrink-0"
           >
             <img
               v-if="blok.logo?.filename"
@@ -43,8 +43,8 @@
           </NuxtLink>
         </Transition>
 
-        <!-- Nav rechts -->
-        <nav class="flex items-center gap-3 ml-auto text-white">
+        <!-- Nav zentriert -->
+        <nav class="flex items-center gap-3 text-white">
           <NuxtLink
             v-for="navItem in blok.nav_menu"
             :key="navItem._uid"
@@ -187,17 +187,24 @@ function syncHeroObserver() {
 
   showNavLogoByHero.value = false;
 
-  nextTick(() => {
-    const heroLogo = document.getElementById("hero-logo-circle");
-    if (!heroLogo) return;
-    heroObserver = new IntersectionObserver(
-      ([entry]) => {
-        showNavLogoByHero.value = !entry.isIntersecting;
-      },
-      { threshold: 0, rootMargin: "-64px 0px 0px 0px" },
-    );
-    heroObserver.observe(heroLogo);
-  });
+  const tryConnect = (attempts = 0) => {
+    nextTick(() => {
+      const heroLogo = document.getElementById("hero-logo-circle");
+      if (heroLogo) {
+        heroObserver = new IntersectionObserver(
+          ([entry]) => {
+            showNavLogoByHero.value = !entry.isIntersecting;
+          },
+          { threshold: 0, rootMargin: "-64px 0px 0px 0px" },
+        );
+        heroObserver.observe(heroLogo);
+      } else if (attempts < 15) {
+        setTimeout(() => tryConnect(attempts + 1), 100);
+      }
+    });
+  };
+
+  tryConnect();
 }
 
 onMounted(syncHeroObserver);
