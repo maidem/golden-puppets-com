@@ -26,24 +26,6 @@
         </p>
       </div>
 
-      <!-- Editor-only: Neuen Artikel anlegen -->
-      <div
-        v-if="isInEditor"
-        class="mb-8 flex items-center gap-3 p-4 rounded-xl border-2 border-dashed border-[#D0992A] bg-[#fdf8ef]"
-      >
-        <span class="text-[#7c5a14] text-sm font-semibold">Visual Editor</span>
-        <button
-          @click.stop="openNewArticle"
-          class="inline-flex items-center gap-2 bg-[#D0992A] hover:bg-[#b8821f] text-white font-bold text-sm px-5 py-2 rounded-full transition-colors duration-200"
-        >
-          <span class="text-lg leading-none">+</span>
-          Neuen Artikel anlegen
-        </button>
-        <span class="text-xs text-[#7c5a14]"
-          >Wird im Ordner „Aktuelles" gespeichert · Seite danach neu laden</span
-        >
-      </div>
-
       <!-- Filter Section - nur im Überseite-Modus -->
       <div
         v-if="!isHomepageMode && blok.enable_filters && filterTags.length > 0"
@@ -86,14 +68,18 @@
             : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
         "
       >
-        <NewsCard
+        <div
           v-for="article in displayedArticles"
           :key="article.slug"
-          :image="article.image"
-          :headline="article.headline"
-          :teaser-text="article.teaserText"
-          :link="article.slug"
-        />
+          v-editable="article.blok"
+        >
+          <NewsCard
+            :image="article.image"
+            :headline="article.headline"
+            :teaser-text="article.teaserText"
+            :link="article.slug"
+          />
+        </div>
       </div>
 
       <!-- Mobile Swiper - nur im Homepage-Modus -->
@@ -126,12 +112,14 @@
             v-for="(article, i) in mappedArticles"
             :key="`${article.slug || 'article'}-${i}`"
           >
-            <NewsCard
-              :image="article.image"
-              :headline="article.headline"
-              :teaser-text="article.teaserText"
-              :link="article.slug"
-            />
+            <div v-editable="article.blok">
+              <NewsCard
+                :image="article.image"
+                :headline="article.headline"
+                :teaser-text="article.teaserText"
+                :link="article.slug"
+              />
+            </div>
           </SwiperSlide>
         </Swiper>
       </div>
@@ -208,21 +196,6 @@ const selectedTag = ref(null);
 const currentPage = ref(1);
 const newsMobileSwiper = ref(null);
 
-// Detect Storyblok Visual Editor context
-const isInEditor = ref(false);
-onMounted(() => {
-  isInEditor.value =
-    "storyblok" in window || window.location.search.includes("_storyblok");
-});
-
-function openNewArticle() {
-  window.open(
-    "https://app.storyblok.com/#/me/spaces/290424384800697/stories/155742849240851",
-    "_blank",
-    "noopener",
-  );
-}
-
 const ITEMS_PER_PAGE = 10;
 const displayLimit = 3;
 
@@ -274,6 +247,7 @@ const mappedArticles = computed(() =>
     tags: story.content.tags?.length
       ? story.content.tags
       : story.tag_list || [],
+    blok: story.content,
   })),
 );
 
