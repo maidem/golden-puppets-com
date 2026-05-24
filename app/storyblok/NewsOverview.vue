@@ -238,6 +238,17 @@ const { data } = useAsyncData(
     }),
 );
 
+// Fetch categories from datasource (single source of truth)
+const { data: datasourceData } = useAsyncData(
+  "news-kategorien-datasource",
+  () =>
+    storyblokApi.get("cdn/datasource_entries", {
+      datasource: "news-kategorien",
+      per_page: 100,
+      version: runtimeConfig.public.storyblokVersion,
+    }),
+);
+
 const mappedArticles = computed(() =>
   (data.value?.data?.stories || []).map((story) => ({
     slug: story.full_slug,
@@ -251,15 +262,21 @@ const mappedArticles = computed(() =>
   })),
 );
 
-// Filter-Tags
+// Filter-Tags: Datasource hat Vorrang, dann available_tags-Override, dann Auto-Detect
 const filterTags = computed(() => {
+  // 1. Override via available_tags textarea (für Sonderfälle)
   if (props.blok.available_tags) {
     return props.blok.available_tags
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
   }
-  // Fallback: auto-detect from story tags
+  // 2. Aus Datasource "news-kategorien"
+  const dsEntries = datasourceData.value?.data?.datasource_entries;
+  if (dsEntries?.length) {
+    return dsEntries.map((e) => e.value).filter(Boolean);
+  }
+  // 3. Fallback: auto-detect from article tags
   const tags = new Set();
   mappedArticles.value.forEach((a) => a.tags.forEach((t) => tags.add(t)));
   return Array.from(tags).sort();

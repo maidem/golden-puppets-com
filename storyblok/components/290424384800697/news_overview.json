@@ -47,8 +47,8 @@
     },
     "available_tags": {
       "type": "textarea",
-      "display_name": "Filter-Tags (kommagetrennt)",
-      "description": "Tags die als Filter-Buttons angezeigt werden. Kommagetrennt, z.B.: KTM,Events,News,Turnier",
+      "display_name": "Filter-Tags überschreiben (optional)",
+      "description": "Leer lassen: Filter-Tags werden automatisch aus der Datasource 'News Kategorien' geladen. Nur füllen, wenn du hier eine andere Auswahl erzwingen willst (kommagetrennt).",
       "pos": 6
     }
   }

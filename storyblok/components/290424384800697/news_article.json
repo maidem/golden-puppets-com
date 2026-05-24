@@ -37,12 +37,9 @@
     "tags": {
       "type": "options",
       "display_name": "Kategorien",
-      "description": "Weise diesen Artikel einer oder mehreren Kategorien zu",
-      "options": [
-        { "name": "Verein", "value": "Verein" },
-        { "name": "Senioren", "value": "Senioren" },
-        { "name": "Sonstiges", "value": "Sonstiges" }
-      ],
+      "description": "Weise diesen Artikel einer oder mehreren Kategorien zu. Neue Kategorien unter Einstellungen → Datasources → 'News Kategorien' hinzufügen.",
+      "source": "internal",
+      "datasource_slug": "news-kategorien",
       "pos": 5
     }
   }
