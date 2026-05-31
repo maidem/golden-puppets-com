@@ -63,11 +63,13 @@ const footerBlok = computed(() => {
 });
 
 // Bridge for real-time updates of the config
-onMounted(() => {
-  if (config.value) {
-    useStoryblokBridge(config.value.id, (newConfig) => {
-      config.value = newConfig;
-    });
-  }
-});
+if (version === "draft") {
+  onMounted(() => {
+    if (config.value) {
+      useStoryblokBridge(config.value.id, (newConfig) => {
+        config.value = newConfig;
+      });
+    }
+  });
+}
 </script>

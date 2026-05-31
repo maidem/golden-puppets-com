@@ -45,20 +45,25 @@ const story = ref(data.value);
 
 // Sync story when navigating client-side (Storyblok editor navigates the iframe
 // programmatically, so the component is reused — data updates but story & bridge don't).
-watch(data, (newData) => {
-  if (newData?.id && newData.id !== story.value?.id) {
-    story.value = newData;
-    if (process.client) {
-      useStoryblokBridge(newData.id, (evStory) => {
-        story.value = evStory;
-      });
+if (version === "draft") {
+  watch(data, (newData) => {
+    if (newData?.id && newData.id !== story.value?.id) {
+      story.value = newData;
+      if (process.client) {
+        useStoryblokBridge(newData.id, (evStory) => {
+          story.value = evStory;
+        });
+      }
     }
-  }
-});
+  });
 
-onMounted(() => {
-  if (story.value?.id) {
-    useStoryblokBridge(story.value.id, (newStory) => (story.value = newStory));
-  }
-});
+  onMounted(() => {
+    if (story.value?.id) {
+      useStoryblokBridge(
+        story.value.id,
+        (newStory) => (story.value = newStory),
+      );
+    }
+  });
+}
 </script>

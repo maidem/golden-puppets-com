@@ -4,12 +4,16 @@
     :id="blok.section_id || 'home'"
     class="relative flex items-center justify-center min-h-[90vh] overflow-hidden bg-black"
   >
-    <!-- Full-width B&W background image -->
-    <div
+    <!-- Full-width B&W background image (img statt CSS-BG für Browser-Preload & WebP) -->
+    <img
       v-if="blok.bg_image?.filename"
-      class="hero-bg absolute inset-0 bg-cover bg-no-repeat"
+      :src="heroBgSrc"
+      :alt="blok.bg_image.alt || ''"
+      class="absolute inset-0 w-full h-full object-cover object-center"
       style="filter: grayscale(1) contrast(1.2) brightness(0.45)"
-      :style="{ backgroundImage: `url(${blok.bg_image.filename})` }"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
     />
     <!-- vignette for premium look -->
     <div
@@ -63,13 +67,13 @@ function toStoryblokImage(url, width) {
 const logoSrc = computed(() =>
   toStoryblokImage(props.blok?.logo?.filename || "", 600),
 );
+
+const heroBgSrc = computed(() =>
+  toStoryblokImage(props.blok?.bg_image?.filename || "", 1920),
+);
 </script>
 
 <style scoped>
-.hero-bg {
-  background-position: center;
-}
-
 .logo-ring {
   position: relative;
   z-index: 20;

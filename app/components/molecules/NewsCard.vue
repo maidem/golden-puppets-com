@@ -6,8 +6,10 @@
     <div class="aspect-video overflow-hidden bg-gray-100">
       <img
         v-if="image"
-        :src="image"
+        :src="optimizedImage"
         :alt="headline"
+        loading="lazy"
+        decoding="async"
         class="w-full h-full object-cover"
       />
       <div
@@ -49,10 +51,19 @@
 <script setup>
 import BaseHeading from "~/components/atoms/BaseHeading.vue";
 
-defineProps({
+const props = defineProps({
   image: { type: String, default: "" },
   headline: { type: String, required: true },
   teaserText: { type: String, default: "" },
   link: { type: String, required: true },
 });
+
+function toStoryblokImage(url, width) {
+  if (!url) return "";
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com"))
+    return url;
+  return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
+}
+
+const optimizedImage = computed(() => toStoryblokImage(props.image, 800));
 </script>

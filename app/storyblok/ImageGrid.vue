@@ -25,9 +25,10 @@
             @click="open(index)"
           >
             <img
-              :src="img.filename"
+              :src="toStoryblokImage(img.filename, 800)"
               :alt="img.alt || ''"
               loading="lazy"
+              decoding="async"
               class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </button>
@@ -72,7 +73,7 @@
           @pointercancel="onPointerUp"
         >
           <img
-            :src="current.filename"
+            :src="toStoryblokImage(current.filename, 1920)"
             :alt="current.alt || ''"
             class="max-w-[90vw] max-h-[80vh] object-contain"
             :style="dragStyle"
@@ -105,6 +106,13 @@
 
 <script setup>
 const props = defineProps({ blok: Object });
+
+function toStoryblokImage(url, width) {
+  if (!url) return "";
+  if (!url.includes("a.storyblok.com") && !url.includes("img2.storyblok.com"))
+    return url;
+  return `${url}/m/${width}x0/filters:quality(85):format(webp)`;
+}
 
 const images = computed(() =>
   Array.isArray(props.blok?.images) ? props.blok.images : [],

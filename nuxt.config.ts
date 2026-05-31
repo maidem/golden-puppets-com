@@ -20,7 +20,7 @@ export default defineNuxtConfig({
       cert: "./localhost.pem",
     },
   },
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== "production" },
   vue: {
     compilerOptions: {
       isCustomElement: (tag) =>
